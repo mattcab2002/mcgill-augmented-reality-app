@@ -5,5 +5,5 @@ The product owner and team agreed that a story is done when:
 *	All story related tests pass, including Gherkin tests, unit tests and integration tests.
 *	All story documentation tasks are completed.
 *	The product builds and is approved by a CI/CD pipeline.
-*	All known bugs in product are acceptable to prod¬¬uct owner.
+*	All known bugs in product are acceptable to product owner.
 *	All non-functional acceptance criteria are met.
