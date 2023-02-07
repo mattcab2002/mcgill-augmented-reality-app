@@ -6,24 +6,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import mcgillar.backend.model.AppUser;
-import mcgillar.backend.model.AppUserAuthority;
-import mcgillar.backend.model.SecurityUser;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import mcgillar.backend.model.user.AppUser;
+import mcgillar.backend.model.user.AppUserAuthority;
+import mcgillar.backend.model.user.SecurityUser;
 import mcgillar.backend.repositories.AppUserRepository;
 
 @Service
+@Data
+@AllArgsConstructor
 public class AppUserService implements UserDetailsService {
 
     private AppUserRepository appUserRepository;
     private PasswordEncoder passwordEncoder;
-
-    public AppUserService(
-        AppUserRepository appUserRepository,
-        PasswordEncoder passwordEncoder
-    ) {
-        this.appUserRepository = appUserRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

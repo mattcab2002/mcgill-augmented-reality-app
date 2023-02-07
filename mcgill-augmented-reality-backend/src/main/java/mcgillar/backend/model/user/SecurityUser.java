@@ -1,4 +1,4 @@
-package mcgillar.backend.model;
+package mcgillar.backend.model.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
