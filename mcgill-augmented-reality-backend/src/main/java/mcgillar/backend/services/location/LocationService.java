@@ -12,7 +12,7 @@ public class LocationService {
     
     private LocationRepository locationRepository;
     
-    public Location createLocation(String postalCode, String address, Long latitude, Long longitude, Long altitude) {
+    public Location createLocation(String postalCode, String address, Double latitude, Double longitude, Double altitude) {
         if (latitude == null || longitude == null) return null;
         Location location = new Location(postalCode, address, latitude, longitude, altitude);
         return locationRepository.save(location);
