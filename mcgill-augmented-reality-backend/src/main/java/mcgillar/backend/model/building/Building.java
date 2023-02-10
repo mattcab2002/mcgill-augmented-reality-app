@@ -20,4 +20,6 @@ public class Building {
     @OneToOne
     private Location location;
 
+    private String name;
+
 }

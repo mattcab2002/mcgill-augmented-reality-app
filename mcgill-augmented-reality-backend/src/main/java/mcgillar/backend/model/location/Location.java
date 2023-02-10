@@ -4,10 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
 public class Location {
     
     @Id
@@ -18,10 +20,17 @@ public class Location {
 
     private String address;
 
-    private long latitude;
+    private Long latitude;
 
-    private long longitude;
+    private Long longitude;
 
-    private long altitude;
+    private Long altitude;
 
+    public Location(String postalCode, String address, Long latitude, Long longitude, Long altitude) {
+        this.postalCode = postalCode;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+    }
 }
