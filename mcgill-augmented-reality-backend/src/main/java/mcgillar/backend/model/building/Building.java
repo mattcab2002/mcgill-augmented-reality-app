@@ -5,14 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mcgillar.backend.model.location.Location;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Building {
     
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,4 +23,10 @@ public class Building {
     @OneToOne
     private Location location;
 
+    private String name;
+
+    public Building(Location location, String name) {
+        this.location = location;
+        this.name = name;
+    }
 }
