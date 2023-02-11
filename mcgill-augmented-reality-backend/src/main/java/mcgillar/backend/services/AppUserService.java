@@ -37,5 +37,4 @@ public class AppUserService implements UserDetailsService {
         newUser.setPasswordHash(passwordEncoder.encode(password));
         return appUserRepository.save(newUser);
     }
-    
 }
