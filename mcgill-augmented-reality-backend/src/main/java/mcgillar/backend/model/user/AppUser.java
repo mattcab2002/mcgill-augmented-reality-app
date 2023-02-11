@@ -3,6 +3,7 @@ package mcgillar.backend.model.user;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true)
     private String username;
 
     private String passwordHash;
