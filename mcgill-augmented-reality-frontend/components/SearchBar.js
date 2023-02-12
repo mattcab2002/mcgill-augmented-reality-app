@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get('window');
 export default function SearchBar() {
     return (
         <View style={styles.container}>
-            <TextInput placeholder='Where To?' placeholderTextColor='black' />
+            <TextInput placeholder='Where To?' placeholderTextColor='black' style={styles.searchField}/>
             {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
             <Image
                 source={require('../assets/search.png')}
@@ -38,8 +38,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingHorizontal: 8,
     },
+    searchField: {
+        width: '100%',
+    },
     search: {
         width: 16,
         height: 16,
+        marginLeft: -16
     },
 });
