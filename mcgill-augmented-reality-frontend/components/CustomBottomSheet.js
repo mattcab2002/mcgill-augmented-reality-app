@@ -3,19 +3,19 @@ import React from 'react';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 export default function CustomBottomSheet(props) {
-    const { building, shortcode, address } = props.location;
+    const { name, address, postalCode } = props.location;
     return (
         <View style={styles.container}>
             <BottomSheet snapPoints={['15%']}>
                 <View style={styles.sheetContainer}>
                     <View style={styles.header}>
                         <Text style={[styles.red, styles.bold]}>
-                            {building}
+                            {name}
                         </Text>
-                        <Text style={styles.bold}>{shortcode}</Text>
+                        <Text style={styles.bold}>{name}</Text>
                     </View>
                     <View>
-                        <Text>{address}</Text>
+                        <Text>{address + ' ' + postalCode}</Text>
                     </View>
                 </View>
             </BottomSheet>
