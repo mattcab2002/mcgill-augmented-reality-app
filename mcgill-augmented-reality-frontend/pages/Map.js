@@ -1,8 +1,14 @@
 import React from 'react';
 import { SafeAreaView,View, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
+import BottomSheet from '../components/CustomBottomSheet';
 import SearchBar from '../components/SearchBar';
 
+const location = {
+    building: "Macdonald Engineering Building",
+    shortcode: "MD",
+    address: "817 Sherbrooke St W, Montreal, QC H3A 0C3"
+}
 class Map extends React.Component {
     constructor(props) {
         super();
@@ -30,6 +36,7 @@ class Map extends React.Component {
                     showsUserLocation={true}
                 />
                 <SearchBar />
+                <BottomSheet location={location} />
             </SafeAreaView>
         );
     }
