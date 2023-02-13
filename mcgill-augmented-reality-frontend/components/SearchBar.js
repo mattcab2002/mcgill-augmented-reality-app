@@ -5,20 +5,52 @@ import {
     Image,
     StyleSheet,
     Dimensions,
+    ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
-export default function SearchBar() {
+export default function SearchBar(props) {
+    const [showResults, setShowResults] = useState(false);
+    const [searchResults, setSearchResults] = useState(
+        props.locations ? props.locations : null
+    );
+    const [query, setQuery] = useState('');
+
     return (
         <View style={styles.container}>
-            <TextInput placeholder='Where To?' placeholderTextColor='black' style={styles.searchField}/>
-            {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
-            <Image
-                source={require('../assets/search.png')}
-                style={styles.search}
-            />
+            <View style={styles.searchBarContainer}>
+                <TextInput
+                    placeholder='Where To?'
+                    placeholderTextColor='black'
+                    style={[styles.searchField, styles.searchSpacing]}
+                    onChangeText={(text) => {
+                        setQuery(text);
+                    }}
+                    onEndEditing={() => {
+                        query == '' && setShowResults(false);
+                    }}
+                    onFocus={() => setShowResults(true)}
+                />
+                {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
+                {!query ? (
+                    <Image
+                        source={require('../assets/search.png')}
+                        style={[styles.search, styles.searchSpacing]}
+                    />
+                ) : null}
+            </View>
+            {showResults && searchResults ? (
+                <ScrollView style={styles.searchResultsContainer}>
+                    {searchResults.map((result) => (
+                        <View style={styles.searchResult} key={result.name}>
+                            <Text>{result.name}</Text>
+                            <Text>{result.location.postalCode}</Text>
+                        </View>
+                    ))}
+                </ScrollView>
+            ) : null}
         </View>
     );
 }
@@ -27,16 +59,18 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
         top: 20,
+        width: width - 20, // margin of 10 on each side
+        maxHeight: 150,
+    },
+    searchBarContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: width - 20, // margin of 10 on each side
-        height: 45,
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 6,
         backgroundColor: 'white',
-        paddingHorizontal: 8,
+        height: 45,
     },
     searchField: {
         width: '100%',
@@ -44,6 +78,23 @@ const styles = StyleSheet.create({
     search: {
         width: 16,
         height: 16,
-        marginLeft: -16
+        marginLeft: -40,
+    },
+    searchResultsContainer: {
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderWidth: 1,
+        height: '100%',
+        flexDirection: 'column',
+        paddingHorizontal: 8,
+        borderRadius: 6,
+    },
+    searchResult: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 4,
+    },
+    searchSpacing: {
+        marginHorizontal: 8,
     },
 });

@@ -34,8 +34,8 @@ export default function Map() {
                 region={region}
                 showsUserLocation={true}
             />
-            {locations && <SearchBar locations/>}
-            {locations && <BottomSheet location={{name: locations[0].name, ...locations[0].location}} />}
+            {locations ? <SearchBar locations={locations} /> : null}
+            {locations ? <BottomSheet location={{name: locations[0].name, ...locations[0].location}} /> : null}
         </SafeAreaView>
     );
 }
