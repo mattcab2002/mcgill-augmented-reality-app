@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Dimensions,
     ScrollView,
+    Pressable
 } from 'react-native';
 import React, { useState } from 'react';
 
@@ -13,6 +14,7 @@ const { width, height } = Dimensions.get('window');
 
 export default function SearchBar(props) {
     const [showResults, setShowResults] = useState(false);
+    const [resultPressed, setResultPressed] = useState(false);
     const [searchResults, setSearchResults] = useState(
         props.locations ? props.locations : null
     );
@@ -24,6 +26,7 @@ export default function SearchBar(props) {
                 <TextInput
                     placeholder='Where To?'
                     placeholderTextColor='black'
+                    value={resultPressed ? query : null}
                     style={[styles.searchField, styles.searchSpacing]}
                     onChangeText={(text) => {
                         setQuery(text);
@@ -44,10 +47,10 @@ export default function SearchBar(props) {
             {showResults && searchResults ? (
                 <ScrollView style={styles.searchResultsContainer}>
                     {searchResults.map((result) => (
-                        <View style={styles.searchResult} key={result.name}>
+                        <Pressable style={styles.searchResult} key={result.name} onPress={() => {setQuery(result.name), setShowResults(false), setResultPressed(true)}}>
                             <Text>{result.name}</Text>
                             <Text>{result.location.postalCode}</Text>
-                        </View>
+                        </Pressable>
                     ))}
                 </ScrollView>
             ) : null}
@@ -58,7 +61,7 @@ export default function SearchBar(props) {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        top: 20,
+        top: 60,
         width: width - 20, // margin of 10 on each side
         maxHeight: 150,
     },

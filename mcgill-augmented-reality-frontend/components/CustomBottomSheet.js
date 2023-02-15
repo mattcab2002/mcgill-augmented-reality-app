@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
 export default function CustomBottomSheet(props) {
     const { name, address, postalCode } = props.location;
     return (
         <View style={styles.container}>
-            <BottomSheet snapPoints={['15%']}>
-                <View style={styles.sheetContainer}>
+            <BottomSheet snapPoints={['15%']} enablePanDownToClose={true}>
+                <BottomSheetView style={styles.sheetContainer}>
                     <View style={styles.header}>
                         <Text style={[styles.red, styles.bold]}>
                             {name}
@@ -17,7 +17,7 @@ export default function CustomBottomSheet(props) {
                     <View>
                         <Text>{address + ' ' + postalCode}</Text>
                     </View>
-                </View>
+                </BottomSheetView>
             </BottomSheet>
         </View>
     );
@@ -25,11 +25,12 @@ export default function CustomBottomSheet(props) {
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        height: '100%',
+        flex:1,
+        width: "100%"
     },
     sheetContainer: {
-        padding: 10,
+        paddingTop: 10,
+        paddingHorizontal: 10
     },
     red: {
         color: '#CD202C',
