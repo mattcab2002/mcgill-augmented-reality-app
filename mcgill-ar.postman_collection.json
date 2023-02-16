@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "e8339d07-7a7a-45bc-b8de-cab705b0103e",
+		"name": "mcgill-ar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25857202"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{backend}}/user/register?username={{dev_user}}&password={{dev_pword}}",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"user",
+						"register"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "{{dev_user}}"
+						},
+						{
+							"key": "password",
+							"value": "{{dev_pword}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
+							"const base64Creds = btoa(creds);\r",
+							"const encryptedCreds = String(base64Creds);\r",
+							"postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const tokenChars = pm.response.stream;\r",
+							"const correct = String(tokenChars)\r",
+							"postman.setEnvironmentVariable(\"dev_token\", correct)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic {{dev_authorization}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/token",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All McGill Buildings",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{dev_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/building/get-all-mcgill-buildings",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"building",
+						"get-all-mcgill-buildings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
