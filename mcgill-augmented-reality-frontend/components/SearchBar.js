@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import {
     Dimensions, Image, Pressable, ScrollView, StyleSheet, Text,
-    TextInput, View
+    TextInput, View, Keyboard
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -13,6 +13,7 @@ export default function SearchBar(props) {
     );
 
     const onSearchResultPressed = (name, location, index) => {
+        Keyboard.dismiss();
         setShowResults(false);
         props.setDesiredLocation({
             name: name,
@@ -44,7 +45,7 @@ export default function SearchBar(props) {
     }
 
     return (
-        <View style={[styles.container, showResults ? styles.border : null]}>
+        <View style={[styles.container, showResults ? styles.border : null]} keyboardShouldPersistTaps='handled'>
             <View
                 style={[
                     styles.searchBarContainer,
@@ -53,6 +54,7 @@ export default function SearchBar(props) {
                         ? styles.searchWithResults
                         : null,
                 ]}
+                keyboardShouldPersistTaps='handled'
             >
                 <TextInput
                     placeholder='Where To?'
@@ -72,7 +74,7 @@ export default function SearchBar(props) {
                 ) : null}
             </View>
             {showResults && searchResults ? (
-                <ScrollView style={styles.searchResultsContainer}>
+                <ScrollView style={styles.searchResultsContainer} keyboardShouldPersistTaps='handled'>
                     {searchResults.map((result, index) => (
                         <Pressable
                             style={styles.searchResult}
