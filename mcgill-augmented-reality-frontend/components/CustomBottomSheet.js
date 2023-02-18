@@ -5,7 +5,7 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 const CustomBottomSheet = forwardRef((props, ref) => {
     const { name, address, postalCode } = props.location;
     return (
-        <BottomSheet ref={ref} snapPoints={['15%']} enablePanDownToClose={true}>
+        <BottomSheet ref={ref} snapPoints={['15%']} enablePanDownToClose={true} index={-1}>
             <BottomSheetView style={styles.sheetContainer}>
                 <View style={styles.header}>
                     <Text style={[styles.red, styles.bold]}>{name}</Text>

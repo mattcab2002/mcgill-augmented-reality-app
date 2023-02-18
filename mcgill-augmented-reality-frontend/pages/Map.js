@@ -8,14 +8,14 @@ import BottomSheet from '../components/CustomBottomSheet';
 
 export default function Map() {
     const [locations, setLocations] = useState();
-    const [desiredLocation, setDesiredLocation] = useState();
+    const [desiredLocation, setDesiredLocation] = useState({name: null, location: null});
 
     const markerRef = useRef([]);
     const mapRef = useRef(null);
     const bottomSheetRef = useRef(null);
 
     const setLocation = (locationObject) => {
-        bottomSheetRef.current.expand(); // open
+        bottomSheetRef.current?.expand(); // open
         setDesiredLocation(locationObject);
         mapRef.current.animateToRegion(
             {
@@ -89,15 +89,13 @@ export default function Map() {
                     markerRef={markerRef}
                 />
             ) : null}
-            {desiredLocation ? (
-                <BottomSheet
-                    ref={bottomSheetRef}
-                    location={{
-                        name: desiredLocation.name,
-                        ...desiredLocation.location,
-                    }}
-                />
-            ) : null}
+            <BottomSheet
+                ref={bottomSheetRef}
+                location={{
+                    name: desiredLocation.name,
+                    ...desiredLocation.location,
+                }}
+            />
         </View>
     );
 }
