@@ -4,11 +4,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import fetchWrapper from '../api';
 import SearchBar from '../components/SearchBar';
+import BottomSheet from '../components/CustomBottomSheet';
 
 export default function Map() {
     const [locations, setLocations] = useState();
+    const [desiredLocation, setDesiredLocation] = useState();
+
+    const markerRef = useRef([]);
+    const mapRef = useRef(null);
+    const bottomSheetRef = useRef(null);
 
     const setLocation = (locationObject) => {
+        bottomSheetRef.current.expand(); // open
+        setDesiredLocation(locationObject);
         mapRef.current.animateToRegion(
             {
                 latitude: locationObject.location.latitude,
@@ -18,9 +26,6 @@ export default function Map() {
             400
         );
     };
-    const markerRef = useRef([]);
-    const mapRef = useRef(null);
-
     const region = {
         latitude: 45.5041,
         longitude: -73.5747,
@@ -84,14 +89,15 @@ export default function Map() {
                     markerRef={markerRef}
                 />
             ) : null}
-            {/* {desiredLocation ? (
+            {desiredLocation ? (
                 <BottomSheet
+                    ref={bottomSheetRef}
                     location={{
                         name: desiredLocation.name,
                         ...desiredLocation.location,
                     }}
                 />
-            ) : null} */}
+            ) : null}
         </View>
     );
 }
