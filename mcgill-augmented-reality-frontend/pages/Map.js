@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import BottomSheet from '../components/CustomBottomSheet';
-import SearchBar from '../components/SearchBar';
-import fetchWrapper from '../api';
 import { BACKEND } from '@env';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import fetchWrapper from '../api';
+import SearchBar from '../components/SearchBar';
 
 export default function Map() {
     const [locations, setLocations] = useState();
-    const [aspectRatio, setAspectRatio] = useState(0);
+    const [desiredLocation, setDesiredLocation] = useState();
+
+    const markerRef = useRef([]);
 
     const region = {
         latitude: 45.5041,
@@ -18,8 +19,6 @@ export default function Map() {
     };
 
     useEffect(() => {
-        const { width, height } = Dimensions.get('window');
-        setAspectRatio(width / height);
         fetchWrapper(`${BACKEND}/building/get-all-mcgill-buildings`).then(
             (locations) => {
                 setLocations(locations);
@@ -31,30 +30,43 @@ export default function Map() {
         <View style={styles.container}>
             <MapView
                 style={styles.map}
-                region={region}
+                initialRegion={region}
                 showsUserLocation={true}
+                region={desiredLocation ? {latitude: desiredLocation.location.latitude, longitude: desiredLocation.location.longitude, ...region.location} : region}
             >
                 {locations
-                    ? locations.map((marker, index) => 
+                    ? locations.map((marker, index) => (
                           <Marker
+                              ref={e => markerRef.current[index] = e}
                               key={index}
                               coordinate={{
                                   latitude: marker.location.latitude,
                                   longitude: marker.location.longitude,
                               }}
                               title={marker.name}
-                              description={marker.location.address + ' ' + marker.location.postalCode}
+                              description={
+                                  marker.location.address +
+                                  ' ' +
+                                  marker.location.postalCode
+                              }
                               image={require('../assets/crest.png')}
+                              onPress={() => {setDesiredLocation({name: marker.name, location: marker.location})}}
                           />
-                    )
+                      ))
                     : null}
             </MapView>
-            {locations ? <SearchBar locations={locations} /> : null}
-            {/* {locations ? (
+            {locations ? (
+                <SearchBar
+                    locations={locations}
+                    setDesiredLocation={setDesiredLocation}
+                    markerRef={markerRef}
+                />
+            ) : null}
+            {/* {desiredLocation ? (
                 <BottomSheet
                     location={{
-                        name: locations[0].name,
-                        ...locations[0].location,
+                        name: desiredLocation.name,
+                        ...desiredLocation.location,
                     }}
                 />
             ) : null} */}

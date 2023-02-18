@@ -1,14 +1,8 @@
-import {
-    View,
-    Text,
-    TextInput,
-    Image,
-    StyleSheet,
-    Dimensions,
-    ScrollView,
-    Pressable
-} from 'react-native';
 import React, { useState } from 'react';
+import {
+    Dimensions, Image, Pressable, ScrollView, StyleSheet, Text,
+    TextInput, View
+} from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -20,16 +14,54 @@ export default function SearchBar(props) {
     );
     const [query, setQuery] = useState('');
 
+    const onSearchResultPressed = (name, location, index) => {
+        setQuery(name);
+        setShowResults(false);
+        setResultPressed(true);
+        props.setDesiredLocation({
+            name: name,
+            location: location,
+        });
+        props.markerRef.current[index].showCallout();
+    };
+
+    function filterSearchResults(query) {
+        const newSearchResults = [];
+        if (query != '') {
+            props.locations.map((searchResult) => {
+                if (
+                    searchResult.name
+                        .toLowerCase()
+                        .indexOf(query.toLowerCase()) != -1
+                ) {
+                    newSearchResults.push(searchResult);
+                }
+            });
+            return newSearchResults;
+        } else {
+            return props.locations;
+        }
+    }
+
     return (
-        <View style={styles.container}>
-            <View style={styles.searchBarContainer}>
+        <View style={[styles.container, showResults ? styles.border : null]}>
+            <View
+                style={[
+                    styles.searchBarContainer,
+                    !showResults ? styles.border : null,
+                    showResults && searchResults.length > 0
+                        ? styles.searchWithResults
+                        : null,
+                ]}
+            >
                 <TextInput
                     placeholder='Where To?'
                     placeholderTextColor='black'
                     value={resultPressed ? query : null}
                     style={[styles.searchField, styles.searchSpacing]}
                     onChangeText={(text) => {
-                        setQuery(text);
+                        setQuery(query);
+                        setSearchResults(filterSearchResults(text));
                     }}
                     onEndEditing={() => {
                         query == '' && setShowResults(false);
@@ -37,7 +69,7 @@ export default function SearchBar(props) {
                     onFocus={() => setShowResults(true)}
                 />
                 {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
-                {!query ? (
+                {!query && !searchResults ? (
                     <Image
                         source={require('../assets/search.png')}
                         style={[styles.search, styles.searchSpacing]}
@@ -46,8 +78,12 @@ export default function SearchBar(props) {
             </View>
             {showResults && searchResults ? (
                 <ScrollView style={styles.searchResultsContainer}>
-                    {searchResults.map((result) => (
-                        <Pressable style={styles.searchResult} key={result.name} onPress={() => {setQuery(result.name), setShowResults(false), setResultPressed(true)}}>
+                    {searchResults.map((result, index) => (
+                        <Pressable
+                            style={styles.searchResult}
+                            key={index}
+                            onPress={() => {onSearchResultPressed(result.name, result.location, index)}}
+                        >
                             <Text>{result.name}</Text>
                             <Text>{result.location.postalCode}</Text>
                         </Pressable>
@@ -63,16 +99,13 @@ const styles = StyleSheet.create({
         position: 'relative',
         top: 60,
         width: width - 20, // margin of 10 on each side
-        maxHeight: 150,
+        backgroundColor: 'white',
+        maxHeight: 160,
     },
     searchBarContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRadius: 6,
-        backgroundColor: 'white',
         height: 45,
     },
     searchField: {
@@ -84,20 +117,26 @@ const styles = StyleSheet.create({
         marginLeft: -40,
     },
     searchResultsContainer: {
-        backgroundColor: 'white',
-        borderColor: 'black',
-        borderWidth: 1,
-        height: '100%',
         flexDirection: 'column',
         paddingHorizontal: 8,
-        borderRadius: 6,
     },
     searchResult: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 4,
+        alignItems: 'center',
+        marginVertical: 8,
+        height: 20,
     },
     searchSpacing: {
         marginHorizontal: 8,
+    },
+    border: {
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 6,
+    },
+    searchWithResults: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
     },
 });
