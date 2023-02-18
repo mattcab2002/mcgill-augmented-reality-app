@@ -1,15 +1,25 @@
 import { BACKEND } from '@env';
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import fetchWrapper from '../api';
 import SearchBar from '../components/SearchBar';
 
 export default function Map() {
     const [locations, setLocations] = useState();
-    const [desiredLocation, setDesiredLocation] = useState();
 
+    const setLocation = (locationObject) => {
+        mapRef.current.animateToRegion(
+            {
+                latitude: locationObject.location.latitude,
+                longitude: locationObject.location.longitude,
+                ...region.location,
+            },
+            400
+        );
+    };
     const markerRef = useRef([]);
+    const mapRef = useRef(null);
 
     const region = {
         latitude: 45.5041,
@@ -29,36 +39,48 @@ export default function Map() {
     return (
         <View style={styles.container}>
             <MapView
+                ref={mapRef}
                 style={styles.map}
                 initialRegion={region}
                 showsUserLocation={true}
-                region={desiredLocation ? {latitude: desiredLocation.location.latitude, longitude: desiredLocation.location.longitude, ...region.location} : region}
             >
                 {locations
                     ? locations.map((marker, index) => (
                           <Marker
-                              ref={e => markerRef.current[index] = e}
+                              ref={(e) => (markerRef.current[index] = e)}
                               key={index}
                               coordinate={{
                                   latitude: marker.location.latitude,
                                   longitude: marker.location.longitude,
                               }}
-                              title={marker.name}
-                              description={
-                                  marker.location.address +
-                                  ' ' +
-                                  marker.location.postalCode
-                              }
                               image={require('../assets/crest.png')}
-                              onPress={() => {setDesiredLocation({name: marker.name, location: marker.location})}}
-                          />
+                              onPress={() => {
+                                  setLocation({
+                                      name: marker.name,
+                                      location: marker.location,
+                                  });
+                              }}
+                          >
+                              <Callout>
+                                  <Text
+                                      style={{
+                                          color: '#CD202C',
+                                          fontWeight: 'bold',
+                                      }}
+                                  >
+                                      {marker.name}
+                                  </Text>
+                                  <Text>{marker.location.address}</Text>
+                                  <Text>{marker.location.postalCode}</Text>
+                              </Callout>
+                          </Marker>
                       ))
                     : null}
             </MapView>
             {locations ? (
                 <SearchBar
                     locations={locations}
-                    setDesiredLocation={setDesiredLocation}
+                    setDesiredLocation={setLocation}
                     markerRef={markerRef}
                 />
             ) : null}
