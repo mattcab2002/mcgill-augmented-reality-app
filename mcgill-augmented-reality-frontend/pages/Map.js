@@ -7,6 +7,12 @@ import SearchBar from '../components/SearchBar';
 import BottomSheet from '../components/CustomBottomSheet';
 
 export default function Map() {
+    const [region, setRegion] = useState({
+        latitude: 45.5041,
+        longitude: -73.5747,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+    });
     const [locations, setLocations] = useState();
     const [desiredLocation, setDesiredLocation] = useState({name: null, location: null});
 
@@ -17,6 +23,13 @@ export default function Map() {
     const setLocation = (locationObject) => {
         bottomSheetRef.current?.expand(); // open
         setDesiredLocation(locationObject);
+        // setRegion(
+        //     {
+        //         latitude: locationObject.location.latitude,
+        //         longitude: locationObject.location.longitude,
+        //         ...region.location,
+        //     },
+        // )
         mapRef.current.animateToRegion(
             {
                 latitude: locationObject.location.latitude,
@@ -25,12 +38,6 @@ export default function Map() {
             },
             400
         );
-    };
-    const region = {
-        latitude: 45.5041,
-        longitude: -73.5747,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
     };
 
     useEffect(() => {
