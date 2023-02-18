@@ -45,11 +45,10 @@ export default function SearchBar(props) {
     }
 
     return (
-        <View style={[styles.container, showResults ? styles.border : null]} keyboardShouldPersistTaps='handled'>
+        <View style={[styles.container, styles.border]} keyboardShouldPersistTaps='handled'>
             <View
                 style={[
                     styles.searchBarContainer,
-                    !showResults ? styles.border : null,
                     showResults && searchResults.length > 0
                         ? styles.searchWithResults
                         : null,
@@ -64,6 +63,7 @@ export default function SearchBar(props) {
                         setSearchResults(filterSearchResults(text));
                     }}
                     onFocus={() => setShowResults(true)}
+                    onEndEditing={() => {setShowResults(false)}}
                 />
                 {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
                 {!showResults ? (
