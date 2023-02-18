@@ -1,14 +1,10 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React, { forwardRef } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import SlideButton from 'rn-slide-button';
+import SlideButton from './CustomSlideButton';
 
 const CustomBottomSheet = forwardRef((props, ref) => {
     const { name, address, postalCode } = props.location;
-
-    const retrieveIFrame = () => {
-        console.log("Retrieving IFrame...");
-    }
 
     return (
         <BottomSheet ref={ref} snapPoints={['20%']} enablePanDownToClose={true} index={-1}>
@@ -20,7 +16,7 @@ const CustomBottomSheet = forwardRef((props, ref) => {
                 <View style={styles.description}>
                     <Text>{address + ' ' + postalCode}</Text>
                 </View>
-                <SlideButton title="Visualize Path" borderRadius={6} height={50} onReachedToEnd={retrieveIFrame} containerStyle={{backgroundColor: '#CD202C'}} thumbStyle={{borderRadius: 6, width: 44}} underlayStyle={{backgroundColor: '#CD202C'}} icon={<Image style={{width: 24, height: 24, tintColor: "#CD202C"}} source={require('../assets/arrow-right.png')} />}/>
+                <SlideButton/>
             </BottomSheetView>
         </BottomSheet>
     );
