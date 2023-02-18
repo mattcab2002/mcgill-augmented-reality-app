@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     Dimensions, Image, Pressable, ScrollView, StyleSheet, Text,
     TextInput, View
@@ -8,21 +8,21 @@ const { width, height } = Dimensions.get('window');
 
 export default function SearchBar(props) {
     const [showResults, setShowResults] = useState(false);
-    const [resultPressed, setResultPressed] = useState(false);
     const [searchResults, setSearchResults] = useState(
         props.locations ? props.locations : null
     );
-    const [query, setQuery] = useState('');
 
     const onSearchResultPressed = (name, location, index) => {
-        setQuery(name);
         setShowResults(false);
-        setResultPressed(true);
         props.setDesiredLocation({
             name: name,
             location: location,
         });
-        props.markerRef.current[index].showCallout();
+        props.locations.map((location, i) => {
+            if (location.name == name) {
+                props.markerRef.current[i].showCallout();
+            }
+        })
     };
 
     function filterSearchResults(query) {
@@ -57,19 +57,14 @@ export default function SearchBar(props) {
                 <TextInput
                     placeholder='Where To?'
                     placeholderTextColor='black'
-                    value={resultPressed ? query : null}
                     style={[styles.searchField, styles.searchSpacing]}
                     onChangeText={(text) => {
-                        setQuery(query);
                         setSearchResults(filterSearchResults(text));
-                    }}
-                    onEndEditing={() => {
-                        query == '' && setShowResults(false);
                     }}
                     onFocus={() => setShowResults(true)}
                 />
                 {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}
-                {!query && !searchResults ? (
+                {!showResults ? (
                     <Image
                         source={require('../assets/search.png')}
                         style={[styles.search, styles.searchSpacing]}
