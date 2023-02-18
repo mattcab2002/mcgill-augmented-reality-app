@@ -36,8 +36,7 @@ export default async function fetchWrapper(
             'Invalid method provided. Methods available are: GET, POST, PUT, DELETE'
         );
     }
-    const token = await getToken(USERNAME, PASSWORD); // replace with async storage
-    headers = {...headers, Authorization: 'Bearer ' + token};
+    headers = {...headers, Authorization: 'Bearer ' + await getToken(USERNAME, PASSWORD)};
 
     let options = {
         method,
