@@ -20,7 +20,7 @@ const CustomBottomSheet = forwardRef((props, ref) => {
                 <View style={styles.description}>
                     <Text>{address + ' ' + postalCode}</Text>
                 </View>
-                <SlideButton title="Visualize Path" borderRadius={6} height={40} onReachToEnd={retrieveIFrame} containerStyle={{backgroundColor: '#CD202C'}} thumbStyle={{borderRadius: 6, width: 44}} underlayStyle={{backgroundColor: '#CD202C'}} icon={<Image style={{width: 24, height: 24, tintColor: "#CD202C"}} source={require('../assets/arrow-right.png')} />}/>
+                <SlideButton title="Visualize Path" borderRadius={6} height={50} onReachToEnd={retrieveIFrame} containerStyle={{backgroundColor: '#CD202C'}} thumbStyle={{borderRadius: 6, width: 44}} underlayStyle={{backgroundColor: '#CD202C'}} icon={<Image style={{width: 24, height: 24, tintColor: "#CD202C"}} source={require('../assets/arrow-right.png')} />}/>
             </BottomSheetView>
         </BottomSheet>
     );
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     description: {
-        marginBottom: 10
+        marginBottom: 6
     },
     button: {
         justifyContent: 'center',
