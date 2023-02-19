@@ -15,9 +15,9 @@ public class BuildingService {
 
     private BuildingRepository buildingRepository;
     
-    public Building createBuilding(String name, Location location) {
+    public Building createBuilding(String name, Location location, String shortCode) {
         if (name == null || name.length() == 0 || location == null) return null;
-        Building building = new Building(location, name);
+        Building building = new Building(location, name, shortCode);
         return buildingRepository.save(building);
     }
 
