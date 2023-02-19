@@ -9,13 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-native": "0.70.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "react-native-dotenv": "^3.4.7"
   },
   "private": true
 }
