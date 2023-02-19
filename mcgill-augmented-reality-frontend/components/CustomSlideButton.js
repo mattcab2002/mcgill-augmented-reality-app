@@ -16,6 +16,7 @@ export default function CustomSlideButton() {
             containerStyle={{ backgroundColor: '#CD202C' }}
             thumbStyle={{ borderRadius: 6, width: 44 }}
             underlayStyle={{ backgroundColor: '#CD202C' }}
+            titleStyle={{fontWeight: 'bold'}}
             icon={
                 <Image
                     style={{ width: 24, height: 24, tintColor: '#CD202C' }}
