@@ -25,7 +25,9 @@ public class Building {
 
     private String name;
 
-    public Building(Location location, String name) {
+    private String shortCode;
+
+    public Building(Location location, String name, String shortCode) {
         this.location = location;
         this.name = name;
     }

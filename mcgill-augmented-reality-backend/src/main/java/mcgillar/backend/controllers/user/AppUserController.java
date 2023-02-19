@@ -2,8 +2,9 @@ package mcgillar.backend.controllers.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,39 @@ public class AppUserController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
+    /**
+     * 
+     * @param newPassword
+     * @return ValidatedUser with status 202 if successful, 400 otherwise
+     */
+    @PutMapping("change-password")
+    public ResponseEntity<ValidatedUser> changePassword(@RequestParam String newPassword) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ValidatedUser user = appUserService.changePassword(newPassword, username);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ValidatedUser>(user, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * 
+     * @param newUsername
+     * @return ValidatedUser with status 202 if successful, 400 otherwise
+     * 
+     * !! NOTE !!
+     * Make sure to reset the token on the front end with the token in validatedUser when a change of username occurs.
+     * 
+     */
+    @PutMapping("change-username")
+    public ResponseEntity<ValidatedUser> changeUsername(@RequestParam String newUsername) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ValidatedUser user = appUserService.changeUsername(newUsername, username);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ValidatedUser>(user, HttpStatus.ACCEPTED);
     }
 
 }
