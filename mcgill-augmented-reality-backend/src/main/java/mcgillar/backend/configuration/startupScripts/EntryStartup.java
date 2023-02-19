@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import mcgillar.backend.model.location.Location;
-import mcgillar.backend.services.AppUserService;
 import mcgillar.backend.services.building.BuildingService;
 import mcgillar.backend.services.location.LocationService;
+import mcgillar.backend.services.user.AppUserService;
 
 @Service
 @AllArgsConstructor
