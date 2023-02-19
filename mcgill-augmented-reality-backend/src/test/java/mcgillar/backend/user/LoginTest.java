@@ -13,7 +13,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import mcgillar.backend.services.AppUserService;
 
@@ -26,7 +25,6 @@ public class LoginTest {
     @Autowired
     private AppUserService appUserService;
 
-    @BeforeTestClass
     @Test
     public void loginSuccess() {
         String username = "test_name";
@@ -38,7 +36,7 @@ public class LoginTest {
     }
 
     @Test
-    public void loginBad() {
+    public void unregisteredUser() {
         String username = "DNE";
         String pass = "DNE";
 
@@ -46,6 +44,15 @@ public class LoginTest {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
+    @Test
+    public void wrongPass() {
+        String username = "test_name";
+        String wrongPass = "wrong_password";
+
+        ResponseEntity<String> response = getResponse(username, wrongPass);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+    
     private ResponseEntity<String> getResponse(String username, String pass) {
         HttpHeaders headers = new HttpHeaders();
         String creds = username + ":" + pass;
