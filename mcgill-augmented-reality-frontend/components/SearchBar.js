@@ -63,7 +63,7 @@ export default function SearchBar(props) {
                     onChangeText={(text) => {
                         setSearchResults(filterSearchResults(text));
                     }}
-                    onFocus={() => setShowResults(true)}
+                    onFocus={() => {setShowResults(true), props.bottomSheetRef.current?.close()}}
                     onEndEditing={() => {setShowResults(false)}}
                 />
                 {/* <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Royyan Wijaya - Flaticon</a> */}

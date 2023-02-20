@@ -95,6 +95,7 @@ export default function Map() {
                     locations={locations}
                     setDesiredLocation={setLocation}
                     markerRef={markerRef}
+                    bottomSheetRef={bottomSheetRef}
                 />
             ) : null}
             <BottomSheet

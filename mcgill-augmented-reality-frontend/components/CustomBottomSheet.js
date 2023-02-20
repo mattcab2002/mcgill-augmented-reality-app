@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React, { forwardRef } from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { forwardRef, useEffect, useState } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import SlideButton from './CustomSlideButton';
 
@@ -7,7 +7,7 @@ const CustomBottomSheet = forwardRef((props, ref) => {
     const { name, address, postalCode, shortCode } = props.location;
 
     return (
-        <BottomSheet ref={ref} snapPoints={['20%']} enablePanDownToClose={true} index={-1}>
+        <BottomSheet ref={ref} snapPoints={["23%"]} enablePanDownToClose={true} index={-1}>
             <BottomSheetView style={styles.sheetContainer}>
                 <View style={styles.header}>
                     <Text style={[styles.red, styles.bold, {fontSize: 16}]}>{name}</Text>
@@ -45,14 +45,6 @@ const styles = StyleSheet.create({
     description: {
         marginBottom: 6
     },
-    button: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#CD202C',
-        padding: 12,
-        borderRadius: 6,
-        borderColor: 'black',
-    }
 });
 
 export default CustomBottomSheet;
