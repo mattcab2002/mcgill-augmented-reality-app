@@ -9,17 +9,30 @@ name: Java CI with Gradle
 
 on:
   push: 
-    branches: backend
+    branches:
+      - backend
   pull_request: 
-    branches: backend
+    branches: 
+      - backend
 
 permissions:
   contents: read
 
 jobs:
+  container-job: 
+    runs-on: ubuntu-latest
+    services: 
+      postgres_db: 
+        image: postgres
+        env: 
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mcgillardb
+        ports:
+          - 5432:5432
   build:
 
-    runs-on: Windows-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
