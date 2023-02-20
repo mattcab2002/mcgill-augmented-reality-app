@@ -11,7 +11,6 @@ on:
   push: 
     branches:
       - backend
-      - trying-to-solve-ci-cd-build-fail
   pull_request: 
     branches: 
       - backend
