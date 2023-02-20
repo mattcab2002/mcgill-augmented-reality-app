@@ -12,12 +12,13 @@ export default function SearchBar(props) {
         props.locations ? props.locations : null
     );
 
-    const onSearchResultPressed = (name, location, index) => {
+    const onSearchResultPressed = (name, location, shortCode, index) => {
         Keyboard.dismiss();
         setShowResults(false);
         props.setDesiredLocation({
             name: name,
             location: location,
+            shortCode: shortCode
         });
         props.locations.map((location, i) => {
             if (location.name == name) {
@@ -79,10 +80,10 @@ export default function SearchBar(props) {
                         <Pressable
                             style={styles.searchResult}
                             key={index}
-                            onPress={() => {onSearchResultPressed(result.name, result.location, index)}}
+                            onPress={() => {onSearchResultPressed(result.name, result.location, result.shortCode, index)}}
                         >
                             <Text>{result.name}</Text>
-                            <Text>{result.location.postalCode}</Text>
+                            <Text>{result.shortCode ? ("(" + result.shortCode.toUpperCase() + " #)") : null}</Text>
                         </Pressable>
                     ))}
                 </ScrollView>

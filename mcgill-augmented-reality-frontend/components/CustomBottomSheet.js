@@ -4,14 +4,14 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import SlideButton from './CustomSlideButton';
 
 const CustomBottomSheet = forwardRef((props, ref) => {
-    const { name, address, postalCode } = props.location;
+    const { name, address, postalCode, shortCode } = props.location;
 
     return (
         <BottomSheet ref={ref} snapPoints={['20%']} enablePanDownToClose={true} index={-1}>
             <BottomSheetView style={styles.sheetContainer}>
                 <View style={styles.header}>
                     <Text style={[styles.red, styles.bold, {fontSize: 16}]}>{name}</Text>
-                    <Text style={styles.bold}>{name}</Text>
+                    <Text style={styles.bold}>{shortCode ? ("(" + shortCode.toUpperCase() + " #)") : null}</Text>
                 </View>
                 <View style={styles.description}>
                     <Text>{address + ' ' + postalCode}</Text>

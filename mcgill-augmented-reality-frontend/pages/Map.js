@@ -70,6 +70,7 @@ export default function Map() {
                                   setLocation({
                                       name: marker.name,
                                       location: marker.location,
+                                      shortCode: marker.shortCode
                                   });
                               }}
                           >
@@ -100,6 +101,7 @@ export default function Map() {
                 ref={bottomSheetRef}
                 location={{
                     name: desiredLocation.name,
+                    shortCode: desiredLocation.shortCode,
                     ...desiredLocation.location,
                 }}
             />
