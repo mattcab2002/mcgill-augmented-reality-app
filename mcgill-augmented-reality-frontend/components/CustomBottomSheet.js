@@ -7,7 +7,7 @@ const CustomBottomSheet = forwardRef((props, ref) => {
     const { name, address, postalCode, shortCode } = props.location;
 
     return (
-        <BottomSheet ref={ref} snapPoints={["23%"]} enablePanDownToClose={true} index={-1}>
+        <BottomSheet ref={ref} snapPoints={[180]} enablePanDownToClose={true} index={-1}>
             <BottomSheetView style={styles.sheetContainer}>
                 <View style={styles.header}>
                     <Text style={[styles.red, styles.bold, {fontSize: 16}]}>{name}</Text>
