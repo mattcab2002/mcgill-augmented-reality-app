@@ -65,18 +65,7 @@ public class TestUserServiceSignUp {
         }
         assertNotNull(user);
     }
-    @Test
-    public void testCreateUserNullUsername() {
 
-        AppUser user = null;
-        try {
-            user = appUserService.createUser(null, PASSWORD);
-        } catch (IllegalArgumentException e) {
-            // Check that no error occurred
-            fail();
-        }
-        assertNull(user);
-    }
     @Test
     public void testCreateUserNameNull() {
 
