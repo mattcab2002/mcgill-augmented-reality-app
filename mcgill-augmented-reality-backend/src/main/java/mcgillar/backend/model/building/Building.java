@@ -30,5 +30,6 @@ public class Building {
     public Building(Location location, String name, String shortCode) {
         this.location = location;
         this.name = name;
+        this.shortCode = shortCode;
     }
 }
