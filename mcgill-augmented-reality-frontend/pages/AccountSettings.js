@@ -36,38 +36,40 @@ export default function AccountSettings() {
 //   },[])
 
   return (
-    <ScrollView style={styles.container}>
-        <View style={styles.accountHeaderContainer}>
-            <UserImage initials="MC" />
-            <View style={styles.accountHeaderText}>
-                <Text style={styles.headerText}>{fullName}</Text>
-                <Text style={styles.greyText}>{userHeader}</Text>
-                <Text style={styles.greyText}>McGill University</Text>
-            </View>
-        </View>
-        <View style={styles.userFieldsContainer}>
-            <Pressable onPress={uploadNewSchedule} style={styles.uploadScheduleButton}>
-                <Text style={styles.uploadText}>Upload Schedule</Text>
-                <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />
-            </Pressable>
-            <View style={styles.inputFieldContainer}>
-                <View style={styles.fullNameContainer}>
-                    <AccountField title="First Name" value={tempUserData.fName} editable/>
-                    <AccountField title="Last Name" value={tempUserData.lName} style={{marginLeft: 10}} editable/>
+    <ScrollView style={styles.scrollViewContainer}>
+        <View style={styles.container}>
+            <View style={styles.accountHeaderContainer}>
+                <UserImage initials="MC" />
+                <View style={styles.accountHeaderText}>
+                    <Text style={styles.headerText}>{fullName}</Text>
+                    <Text style={styles.greyText}>{userHeader}</Text>
+                    <Text style={styles.greyText}>McGill University</Text>
                 </View>
-                <AccountField title="Student Number" value={tempUserData.studentNumber} editable/>
-                <View style={styles.fullNameContainer}>
-                    <AccountField title="Country Code" value={"+" + tempUserData.countryCode} style={{flex:0}} editable/>
-                    <AccountField title="Phone Number" value={tempUserData.phoneNumber} style={{flex:4, marginLeft: 10}} editable/>
-                </View>
-                <AccountField title="Email" value={tempUserData.email} editable/>
-                <AccountField title="Password" value={tempUserData.password} editable/>
             </View>
-            <View style={styles.dangerZoneContainer}>
-                <Text style={styles.dangerZoneText}>Danger Zone</Text>
-                <Pressable onPress={deleteAccount} style={styles.dangerZoneButton}>
-                    <Text style={styles.deleteAccount}>Delete Account</Text>
+            <View style={styles.userFieldsContainer}>
+                <Pressable onPress={uploadNewSchedule} style={styles.uploadScheduleButton}>
+                    <Text style={styles.uploadText}>Upload Schedule</Text>
+                    <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />
                 </Pressable>
+                <View style={styles.inputFieldContainer}>
+                    <View style={styles.fullNameContainer}>
+                        <AccountField title="First Name" value={tempUserData.fName} editable/>
+                        <AccountField title="Last Name" value={tempUserData.lName} style={{marginLeft: 10}} editable/>
+                    </View>
+                    <AccountField title="Student Number" value={tempUserData.studentNumber} editable/>
+                    <View style={styles.fullNameContainer}>
+                        <AccountField title="Country Code" value={"+" + tempUserData.countryCode} style={{flex:0}} editable/>
+                        <AccountField title="Phone Number" value={tempUserData.phoneNumber} style={{flex:4, marginLeft: 10}} editable/>
+                    </View>
+                    <AccountField title="Email" value={tempUserData.email} editable/>
+                    <AccountField title="Password" value={tempUserData.password} editable/>
+                </View>
+                <View style={styles.dangerZoneContainer}>
+                    <Text style={styles.dangerZoneText}>Danger Zone</Text>
+                    <Pressable onPress={deleteAccount} style={styles.dangerZoneButton}>
+                        <Text style={styles.deleteAccount}>Delete Account</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     </ScrollView>
@@ -77,7 +79,9 @@ export default function AccountSettings() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20
+        paddingHorizontal: 20,
+        paddingTop: 60,
+        paddingBottom: 40
     },
     accountHeaderContainer: {
         flexDirection: 'row',
@@ -111,16 +115,18 @@ const styles = StyleSheet.create({
     dangerZoneButton: {
         marginTop: 6,
         height: 45,
-        backgroundColor: '#CD202C',
+        backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10, 
         borderRadius: 6,
+        borderWidth: 1,
+        borderColor: "#ED404C",
         width: '100%'
     },
     deleteAccount: {
-        color: 'white',
+        color: '#ED404C',
         fontSize: 16,
         fontWeight: '500',
     },
