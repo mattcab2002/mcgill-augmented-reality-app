@@ -32,7 +32,86 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Register User",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user/register?username={{dev_user}}&password={{dev_pword}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"register"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{dev_user}}"
+								},
+								{
+									"key": "password",
+									"value": "{{dev_pword}}"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Feb 2023 19:34:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
+				}
+			]
 		},
 		{
 			"name": "Get Token",
@@ -53,9 +132,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const tokenChars = pm.response.stream;\r",
-							"const correct = String(tokenChars)\r",
-							"postman.setEnvironmentVariable(\"dev_token\", correct)"
+							"if (responseCode.code === 200) {\r",
+							"    const tokenChars = pm.response.stream;\r",
+							"    const correct = String(tokenChars);\r",
+							"    postman.setEnvironmentVariable(\"dev_token\", correct);\r",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -80,7 +161,81 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Get Token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic {{dev_authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{backend}}/token",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "478"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Feb 2023 19:34:38 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidGVzdF9uYW1lIiwiZXhwIjoxNjc2OTIxNzk4LCJpYXQiOjE2NzY5MjE2NzgsInNjb3BlIjpbIk1FTUJFUiJdfQ.rbFM1CqY1Ea05kZCFfyqhToHNkO3HE8c2szLnjKQZ3bF5R28t-N5JubOB_9niD6U0LFCAXI7nLlgNL43pmFZxQ8LxmrQwInnFvOoCNYOWdv67odofcT1T8Y2OaJqr3gJyn-ayRNHmhmWplM2hz_2acPSLS_QQaNFwkzas-z2AlENFqF3z6jXrSrfmvBGbggasMzuBYbr4N3z5wt5gCtcoe9ir1tDlx8P_mc8Bd1HDvfwJQw5l_kzuOzQ_K1LtR9gdiFRGy9USP25Eme3wVWAdik1Y7QTczCaTyDSda7rPU_W4iMDNZZ3gzPbRyBJWnf1SlvOnLuB3UHxVI1bU70Llg"
+				}
+			]
 		},
 		{
 			"name": "Get All McGill Buildings",
@@ -115,7 +270,358 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Get All McGill Buildings",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dev_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{backend}}/building/get-all-mcgill-buildings",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"building",
+								"get-all-mcgill-buildings"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Feb 2023 19:33:47 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"location\": {\n            \"id\": 1,\n            \"postalCode\": \"H3A 2B3\",\n            \"address\": \"3630 Rue University, Montreal QC\",\n            \"latitude\": 45.507392652505075,\n            \"longitude\": -73.57878717972841,\n            \"altitude\": null\n        },\n        \"name\": \"Troitter Building\",\n        \"shortCode\": \"ENGTR\"\n    },\n    {\n        \"id\": 2,\n        \"location\": {\n            \"id\": 2,\n            \"postalCode\": \"H3A 0C5\",\n            \"address\": \"3610 Rue University, Montreal QC\",\n            \"latitude\": 45.5066955721648,\n            \"longitude\": -73.57862770873622,\n            \"altitude\": null\n        },\n        \"name\": \"M. H. Wong Building\",\n        \"shortCode\": \"MH\"\n    },\n    {\n        \"id\": 3,\n        \"location\": {\n            \"id\": 3,\n            \"postalCode\": \"H3A 0G1\",\n            \"address\": \"740 Dr Penfield Ave, Montreal QC\",\n            \"latitude\": 45.50693645707051,\n            \"longitude\": -73.57930870936448,\n            \"altitude\": null\n        },\n        \"name\": \"McGill Genome Center\",\n        \"shortCode\": \"GC\"\n    },\n    {\n        \"id\": 4,\n        \"location\": {\n            \"id\": 4,\n            \"postalCode\": \"H3A 0B8\",\n            \"address\": \"680 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.50482034608999,\n            \"longitude\": -73.57340365102091,\n            \"altitude\": null\n        },\n        \"name\": \"680 Sherbrooke\",\n        \"shortCode\": \"680\"\n    },\n    {\n        \"id\": 5,\n        \"location\": {\n            \"id\": 5,\n            \"postalCode\": \"H2X 2G6\",\n            \"address\": \"3380 Blvd Robert-Bourassa, Montreal QC\",\n            \"latitude\": 45.50611767441953,\n            \"longitude\": -73.57644933043366,\n            \"altitude\": null\n        },\n        \"name\": \"McConnell Engineering Building\",\n        \"shortCode\": \"ENGMC\"\n    },\n    {\n        \"id\": 6,\n        \"location\": {\n            \"id\": 6,\n            \"postalCode\": \"H3A 0C3\",\n            \"address\": \"817 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.5055989496,\n            \"longitude\": -73.5766544175,\n            \"altitude\": null\n        },\n        \"name\": \"Macdonald Engineering Building\",\n        \"shortCode\": \"MC\"\n    },\n    {\n        \"id\": 7,\n        \"location\": {\n            \"id\": 7,\n            \"postalCode\": \"H3A 2T7\",\n            \"address\": \"855 Sherbrooke St W, Montreal, QC\",\n            \"latitude\": 45.50432,\n            \"longitude\": -73.57793,\n            \"altitude\": null\n        },\n        \"name\": \"Stephen Leacock Building\",\n        \"shortCode\": \"LEA\"\n    },\n    {\n        \"id\": 8,\n        \"location\": {\n            \"id\": 8,\n            \"postalCode\": \"H3A 0E8\",\n            \"address\": \"3450 University Street, Montreal QC\",\n            \"latitude\": 45.5057672817931,\n            \"longitude\": -73.57522258870566,\n            \"altitude\": null\n        },\n        \"name\": \"Frank Dawson Adams Building\",\n        \"shortCode\": \"FDA\"\n    },\n    {\n        \"id\": 9,\n        \"location\": {\n            \"id\": 9,\n            \"postalCode\": \"H3A OC2\",\n            \"address\": \"815 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.505550605528406,\n            \"longitude\": -73.57575977336441,\n            \"altitude\": null\n        },\n        \"name\": \"Macdonald-Harrington Building\",\n        \"shortCode\": \"MDHAR\"\n    },\n    {\n        \"id\": 10,\n        \"location\": {\n            \"id\": 10,\n            \"postalCode\": \"H3A 0B8\",\n            \"address\": \"801 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.50512340287696,\n            \"longitude\": -73.57406918870562,\n            \"altitude\": null\n        },\n        \"name\": \"Maass Chemistry Building\",\n        \"shortCode\": \"MAASS\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Change Password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 202) {\r",
+							"\r",
+							"    // swap dev_pword and new_dev_pword\r",
+							"    const new_dev_pword = environment.dev_pword;\r",
+							"    postman.setEnvironmentVariable(\"dev_pword\", environment.new_dev_pword);\r",
+							"    postman.setEnvironmentVariable(\"new_dev_pword\", new_dev_pword);\r",
+							"\r",
+							"// fix dev_authorization if it is needed again with new pword\r",
+							"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
+							"    const base64Creds = btoa(creds);\r",
+							"    const encryptedCreds = String(base64Creds);\r",
+							"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{dev_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"user",
+						"change-password"
+					],
+					"query": [
+						{
+							"key": "newPassword",
+							"value": "{{new_dev_pword}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Change Password",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dev_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"change-password"
+							],
+							"query": [
+								{
+									"key": "newPassword",
+									"value": "{{new_dev_pword}}"
+								}
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Feb 2023 19:33:14 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Change Username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code === 202) {\r",
+							"\r",
+							"    // swap new_dev_user and dev_user\r",
+							"    const new_dev_user = environment.dev_user;\r",
+							"    postman.setEnvironmentVariable(\"dev_user\", environment.new_dev_user);\r",
+							"    postman.setEnvironmentVariable(\"new_dev_user\", new_dev_user);\r",
+							"\r",
+							"\r",
+							"// replace token with new token\r",
+							"    const tokenChars = pm.response.json().token;\r",
+							"    console.log(tokenChars);\r",
+							"    const correct = String(tokenChars)\r",
+							"    console.log(correct);\r",
+							"    postman.setEnvironmentVariable(\"dev_token\", correct)\r",
+							"\r",
+							"// fix dev_authorization if it is needed again with new pword\r",
+							"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
+							"    const base64Creds = btoa(creds);\r",
+							"    const encryptedCreds = String(base64Creds);\r",
+							"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{dev_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
+					"host": [
+						"{{backend}}"
+					],
+					"path": [
+						"user",
+						"change-username"
+					],
+					"query": [
+						{
+							"key": "newUsername",
+							"value": "{{new_dev_user}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Change Username",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dev_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"change-username"
+							],
+							"query": [
+								{
+									"key": "newUsername",
+									"value": "{{new_dev_user}}"
+								}
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 20 Feb 2023 19:07:10 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"test_name2\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": \"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidGVzdF9uYW1lMiIsImV4cCI6MTY3NjkyMDE1MCwiaWF0IjoxNjc2OTIwMDMwLCJzY29wZSI6WyJNRU1CRVIiXX0.Suf7nrgCvWhk7o7lVN0Tvd5LAAjQnrDCDYBZQsePbYIYC9-Ge-fv_Y4fctieyu93BsQd8f9ZW-EwKtjiCiLEamHr5vpBsZVoY_naLVh6d4pXPaMWyEEBkSBlTMRWvqcs7oLGrHspfpeJWJXtymWpw8r8xcITyvjCwXHcztWaHZgqH-MmU4E38CMzQmUMYeFH2NARAK5dW9mRARL1k1u60ApXe8Wzt0t9rdnQamuyJgKDTswlgzOO6a4Mp6rpvnybI3ZvheLt1DfAkLNsxxRSPNse0k0KIlY8w5GCEenyKxPEBp0EUGHf7UgLRRsm5nPbwrCWaDFYnt5M0el2CresHg\"\n}"
+				}
+			]
 		}
 	]
 }
