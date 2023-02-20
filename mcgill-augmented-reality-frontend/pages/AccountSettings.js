@@ -1,11 +1,13 @@
 import { ScrollView, Button, View, Text, Pressable, StyleSheet, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import UserImage from '../components/UserImage'
 import AccountField from '../components/AccountField';
 import fetchWrapper from '../api';
 import {BACKEND} from '@env';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function AccountSettings() {
+  const [image, setImage] = useState(null);
   const accountFields = ["First Name", "Last Name", "Student #", "Country", "Phone Number", "Email", "Password"];
 
   const tempUserData = {
@@ -23,8 +25,20 @@ export default function AccountSettings() {
   const fullName = (tempUserData.fName ? tempUserData.fName : "User") + " " + tempUserData.lName;
   const userHeader = (tempUserData.year && ("U" + tempUserData.year)) +  " " + (tempUserData.faculty ? tempUserData.faculty : "Student");
 
-  const uploadNewSchedule = () => {
-    console.log("New Schedule Uploaded.");
+  const uploadNewSchedule = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+    
+    console.log(result);
+    
+    if (!result.canceled) {
+        setImage(result.assets[0].uri);
+    }
   }
 
   const deleteAccount = () => {
