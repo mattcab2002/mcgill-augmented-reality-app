@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  container-job: 
+  build-job: 
     runs-on: ubuntu-latest
     services: 
       postgres_db: 
@@ -30,10 +30,6 @@ jobs:
           POSTGRES_DB: mcgillardb
         ports:
           - 5432:5432
-  build:
-
-    runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
