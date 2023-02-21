@@ -1,0 +1,5 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "prettier.jsxSingleQuote": true,
+    "prettier.useTabs": true
+}
