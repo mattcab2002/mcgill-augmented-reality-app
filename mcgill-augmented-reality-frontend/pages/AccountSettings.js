@@ -17,6 +17,7 @@ export default function AccountSettings() {
     countryCode: '1',
     phoneNumber: '5147437101',
     email: 'matthew.cabral@mail.mcgill.ca',
+    username: 'mattcab2002',
     password: '••••••••••••••',
     year: 2,
     faculty: 'Software Engineering'
@@ -67,15 +68,16 @@ export default function AccountSettings() {
                 </Pressable>
                 <View style={styles.inputFieldContainer}>
                     <View style={styles.fullNameContainer}>
-                        <AccountField title="First Name" value={tempUserData.fName} editable/>
-                        <AccountField title="Last Name" value={tempUserData.lName} style={{marginLeft: 10}} editable/>
+                        <AccountField title="First Name" value={tempUserData.fName}/>
+                        <AccountField title="Last Name" value={tempUserData.lName} style={{marginLeft: 10}}/>
                     </View>
-                    <AccountField title="Student Number" value={tempUserData.studentNumber} editable/>
+                    <AccountField title="Student Number" value={tempUserData.studentNumber}/>
                     <View style={styles.fullNameContainer}>
-                        <AccountField title="Country Code" value={"+" + tempUserData.countryCode} style={{flex:0}} editable/>
-                        <AccountField title="Phone Number" value={tempUserData.phoneNumber} style={{flex:4, marginLeft: 10}} editable/>
+                        <AccountField title="Country Code" value={"+" + tempUserData.countryCode} style={{flex:0}}/>
+                        <AccountField title="Phone Number" value={tempUserData.phoneNumber} style={{flex:4, marginLeft: 10}}/>
                     </View>
-                    <AccountField title="Email" value={tempUserData.email} editable/>
+                    <AccountField title="Email" value={tempUserData.email}/>
+                    <AccountField title="Username" value={tempUserData.username} editable/>
                     <AccountField title="Password" value={tempUserData.password} editable/>
                 </View>
                 <View style={styles.dangerZoneContainer}>
