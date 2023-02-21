@@ -3,12 +3,12 @@ import { ImageBackground, StyleSheet, View, TouchableOpacity, Image, Text } from
 
 const image = {uri: 'https://wallpapercave.com/wp/wp10982822.jpg'};
 
-function HomeScreen(props) {
+function HomeScreen({ navigation }) {
     return (
         <ImageBackground source={image} resizeMode="cover" style={styles.bgImage} blurRadius={0}>
             <Image source={require('../assets/mcgill-icon.png')} style={styles.logo}/>
             <Text style={styles.title}>AUGMENTED REALITY</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.started}>Get Started</Text>
             </TouchableOpacity>
         </ImageBackground>
