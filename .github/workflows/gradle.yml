@@ -9,18 +9,27 @@ name: Java CI with Gradle
 
 on:
   push: 
-    branches: backend
+    branches:
+      - backend
   pull_request: 
-    branches: backend
+    branches: 
+      - backend
 
 permissions:
   contents: read
 
 jobs:
-  build:
-
-    runs-on: Windows-latest
-
+  build-job: 
+    runs-on: ubuntu-latest
+    services: 
+      postgres_db: 
+        image: postgres
+        env: 
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mcgillardb
+        ports:
+          - 5432:5432
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 17
