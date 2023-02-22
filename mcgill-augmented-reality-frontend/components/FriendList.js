@@ -10,7 +10,7 @@ const FriendList = () => {
   ]);
 
   const removeFriend = (id) => {
-    
+    //setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== id));
   };
 
   const renderFriend = ({ item }) => (
@@ -31,7 +31,15 @@ const FriendList = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Friends List</Text>
+        <Text style={styles.titleText}>Friends</Text>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => {
+              // Add friend logic goes here
+            }}
+          >
+            <Text style={styles.addButtonText}>+</Text>
+          </TouchableOpacity>
       </View>
       <FlatList
         data={friends}
@@ -49,6 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   titleContainer: {
+    flexDirection: 'row',
     height: 95,
     paddingTop: 50,
     backgroundColor: '#CD202C',
@@ -59,6 +68,9 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center',
+    flex: 1,
+    paddingLeft: 50,
   },
   listContainer: {
     paddingBottom: 60,
@@ -95,6 +107,22 @@ const styles = StyleSheet.create({
   friendStatus: {
     fontSize: 14,
     color: '#A0A0A0',
+  },
+  addButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#CD202C',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 17,
+  },
+  addButtonText: {
+    color: '#CD202C',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   deleteButton: {
     borderRadius: 50,
