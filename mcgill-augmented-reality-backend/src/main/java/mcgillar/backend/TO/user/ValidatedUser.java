@@ -29,5 +29,13 @@ public class ValidatedUser {
         this.authorities = user.getAuthorities();
         this.token = token;
     }
+
+    public static ValidatedUser getInstance(AppUser user) {
+        return new ValidatedUser(user);
+    }
+
+    public static ValidatedUser getInstance(AppUser user, String token) {
+        return new ValidatedUser(user, token);
+    }
     
 }
