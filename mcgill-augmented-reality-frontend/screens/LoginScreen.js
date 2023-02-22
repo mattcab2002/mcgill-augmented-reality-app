@@ -1,18 +1,25 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback, Text, TextInput, Keyboard } from 'react-native';
+import { getTokenRes } from '../api';
+import { storeEmail, storeToken } from '../async';
 
 function LoginScreen({ navigation }) {
 
-    const [email, onChangeEmail] = React.useState('');
-    const [password, onChangePassword] = React.useState('');
+    const [email, onChangeEmail] = useState('');
+    const [password, onChangePassword] = useState('');
+    const [isErrorShow, setIsErrowShow] = useState(false);
 
     function handlePress() {
-        // TODO: call backend API for login in
-        console.log('Login pressed');
-        console.log('Email: ' + email);
-        console.log('Password: ' + password);
-        // TODO: switch to next screen
-        // navigation.navigate('nextScreenName');
+        getTokenRes(email, password)
+        .then(res => {
+            if (res.status == 200) {
+                // navigation.navigate('nextScreenName');
+                storeEmail(email);
+                storeToken(res.text());
+            } else {
+                setIsErrowShow(true);
+            }
+        })
     }
 
     return (
@@ -37,6 +44,16 @@ function LoginScreen({ navigation }) {
                     value={password} 
                     placeholder='Password'
                 />
+                <View style={styles.spaceSmall}/>
+                <Text style={{
+                    color: 'red',
+                    fontSize: 15,
+                    textAlign: 'center',
+                    width: '80%',
+                    opacity: isErrorShow ? 1 : 0
+                }}>
+                    Incorrect email/password.
+                </Text>
                 <View style={styles.spaceLarge}/>
                 <TouchableOpacity style={styles.button} onPress={handlePress}>
                     <Text style={styles.buttonText}>Login</Text>

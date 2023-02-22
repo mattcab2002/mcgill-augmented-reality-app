@@ -1,19 +1,20 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback, Text, TextInput, Keyboard } from 'react-native';
+import { registerUser } from '../api';
 
 function SignupScreen({ navigation }) {
 
-    const [name, onChangeName] = React.useState('');
-    const [email, onChangeEmail] = React.useState('');
-    const [password, onChangePassword] = React.useState('');
+    const [name, onChangeName] = useState('');
+    const [email, onChangeEmail] = useState('');
+    const [password, onChangePassword] = useState('');
 
     function handlePress() {
-        // TODO: call backend API for signing up
-        console.log('Login pressed');
-        console.log('Name: ' + name);
-        console.log('Email: ' + email);
-        console.log('Password: ' + password);
-        // TODO: switch to next screen
+        registerUser(email, password)
+        .then(res => {
+            if (res.status !== 200) {
+                console.log(res.error())
+            }
+        })
         // navigation.navigate('nextScreenName');
     }
 
