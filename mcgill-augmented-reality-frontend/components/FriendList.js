@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput  } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const FriendList = () => {
   const [friends, setFriends] = useState([
-    { id: '1', name: 'John' },
-    { id: '2', name: 'Sarah' },
-    { id: '3', name: 'Jane' },
-    { id: '4', name: 'Mike' },
+    { id: '1', name: 'John', status: 'Online' },
+    { id: '2', name: 'Sarah', status: 'Online' },
+    { id: '3', name: 'Jane', status: 'Offline' },
+    { id: '4', name: 'Mike', status: 'Offline' },
   ]);
-
+  const [searchText, setSearchText] = useState('');
+  
   const removeFriend = (id) => {
     setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== id));
   };
@@ -21,6 +23,14 @@ const FriendList = () => {
     setFriends([...friends, newFriend]);
   };
 
+  const handleSearch = (text) => {
+    setSearchText(text);
+  };
+
+  const filteredFriends = friends.filter((friend) =>
+    friend.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   const renderFriend = ({ item }) => (
     <View style={styles.friendContainer}>
       <View style={styles.avatarContainer}>
@@ -28,10 +38,10 @@ const FriendList = () => {
       </View>
       <View style={styles.friendInfoContainer}>
         <Text style={styles.friendName}>{item.name}</Text>
-        <Text style={styles.friendStatus}>Online</Text>
+        <Text style={styles.friendStatus}>{item.status}</Text>
       </View>
       <TouchableOpacity onPress={() => removeFriend(item.id)}>
-        <Text style={styles.deleteButton}>X</Text>
+        <Ionicons name="remove-circle" size={24} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -47,8 +57,14 @@ const FriendList = () => {
             <Text style={styles.addButtonText}>+</Text>
           </TouchableOpacity>
       </View>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search for friends"
+        value={searchText}
+        onChangeText={handleSearch}
+      />
       <FlatList
-        data={friends}
+        data={filteredFriends}
         renderItem={renderFriend}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
@@ -123,12 +139,19 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 17,
+    marginRight: 18,
   },
   addButtonText: {
     color: '#CD202C',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  searchBar: {
+    backgroundColor: '#F5F5F5',
+    padding: 5,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderRadius: 5,
   },
   deleteButton: {
     borderRadius: 50,
