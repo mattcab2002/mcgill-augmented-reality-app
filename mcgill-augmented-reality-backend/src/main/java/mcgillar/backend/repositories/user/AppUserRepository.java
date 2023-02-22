@@ -1,4 +1,4 @@
-package mcgillar.backend.repositories;
+package mcgillar.backend.repositories.user;
 
 import org.springframework.data.repository.CrudRepository;
 
