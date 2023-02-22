@@ -77,14 +77,12 @@ public class AppUserController {
      * !! Danger !!
      */
     @DeleteMapping("delete-account")
-    public ResponseEntity<ValidatedUser> deleteAccount(
+    public ResponseEntity<String> deleteAccount(
         Authentication authentication
     ) {
         String username = authentication.getName();
-        AppUser user = appUserService.getUserByUsername(username);
-        ValidatedUser to = ValidatedUser.getInstance(user);
         appUserService.deleteAccount(username);
-        return new ResponseEntity<ValidatedUser>(to, HttpStatus.ACCEPTED);
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
 }
