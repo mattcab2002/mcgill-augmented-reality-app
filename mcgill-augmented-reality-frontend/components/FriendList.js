@@ -10,7 +10,15 @@ const FriendList = () => {
   ]);
 
   const removeFriend = (id) => {
-    //setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== id));
+    setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== id));
+  };
+
+  const handleFriendRequest = () => {
+    const newFriend = {
+      id: String(Math.random()),
+      name: 'New Friend',
+    };
+    setFriends([...friends, newFriend]);
   };
 
   const renderFriend = ({ item }) => (
@@ -34,9 +42,7 @@ const FriendList = () => {
         <Text style={styles.titleText}>Friends</Text>
           <TouchableOpacity
             style={styles.addButton}
-            onPress={() => {
-              // Add friend logic goes here
-            }}
+            onPress={handleFriendRequest}
           >
             <Text style={styles.addButtonText}>+</Text>
           </TouchableOpacity>
