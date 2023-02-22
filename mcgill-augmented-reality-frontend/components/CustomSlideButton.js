@@ -1,5 +1,5 @@
-import {Image} from 'react-native';
 import React from 'react';
+import { Image } from 'react-native';
 import SlideButton from 'rn-slide-button';
 
 export default function CustomSlideButton() {

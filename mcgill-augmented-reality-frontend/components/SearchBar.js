@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
-    Dimensions, Image, Pressable, ScrollView, StyleSheet, Text,
-    TextInput, View, Keyboard
+    Dimensions, Image, Keyboard, Pressable, ScrollView, StyleSheet, Text,
+    TextInput, View
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');

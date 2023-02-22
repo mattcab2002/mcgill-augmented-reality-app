@@ -1,10 +1,10 @@
 import { BACKEND } from '@env';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Callout, Marker } from 'react-native-maps';
 import fetchWrapper from '../api';
-import SearchBar from '../components/SearchBar';
 import BottomSheet from '../components/CustomBottomSheet';
+import SearchBar from '../components/SearchBar';
 
 export default function Map() {
     const [region, setRegion] = useState({
@@ -23,13 +23,16 @@ export default function Map() {
     const setLocation = (locationObject) => {
         bottomSheetRef.current?.expand(); // open
         setDesiredLocation(locationObject);
-        // setRegion(
-        //     {
-        //         latitude: locationObject.location.latitude,
-        //         longitude: locationObject.location.longitude,
-        //         ...region.location,
-        //     },
-        // )
+        /*
+        if we want to move the region to the center of the map
+        setRegion( 
+            {
+                latitude: locationObject.location.latitude,
+                longitude: locationObject.location.longitude,
+                ...region.location,
+            },
+        )
+        */
         mapRef.current.animateToRegion(
             {
                 latitude: locationObject.location.latitude,

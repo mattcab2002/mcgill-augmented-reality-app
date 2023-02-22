@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import React, { forwardRef, useEffect, useState } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import React, { forwardRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import SlideButton from './CustomSlideButton';
 
 const CustomBottomSheet = forwardRef((props, ref) => {
