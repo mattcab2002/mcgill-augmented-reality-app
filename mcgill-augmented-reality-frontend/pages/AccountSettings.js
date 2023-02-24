@@ -5,26 +5,35 @@ import AccountField from '../components/AccountField';
 import fetchWrapper from '../api';
 import {BACKEND} from '@env';
 import * as ImagePicker from 'expo-image-picker';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function AccountSettings() {
   const [image, setImage] = useState(null);
-  const accountFields = ["First Name", "Last Name", "Student #", "Country", "Phone Number", "Email", "Password"];
+  const [modalVisible, setModalVisible] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    full_name: null,
+    last_name: null,
+    student_number: null,
+    email: null,
+    username: null,
+    country_code: null,
+    phone_number: null,
+    faculty: null,
+    year: null
+  });
+  const placeHolderPassword = "••••••••••••";
 
-  const tempUserData = {
-    fName: 'Matthew',
-    lName: 'Cabral',
-    studentNumber: '261051028',
-    countryCode: '1',
-    phoneNumber: '5147437101',
-    email: 'matthew.cabral@mail.mcgill.ca',
-    username: 'mattcab2002',
-    password: '••••••••••••••',
-    year: 2,
-    faculty: 'Software Engineering'
-  }
+  useEffect(() => {
+        fetchWrapper(`${BACKEND}/user-info/get-all-user-info`).then(
+            (info) => {
+                console.log(setUserInfo);
+            }
+        );
+  },[])
 
-  const fullName = (tempUserData.fName ? tempUserData.fName : "User") + " " + tempUserData.lName;
-  const userHeader = (tempUserData.year && ("U" + tempUserData.year)) +  " " + (tempUserData.faculty ? tempUserData.faculty : "Student");
+  const initials = (userInfo.first_name && userInfo.last_name) ? ((userInfo.full_name && typeof userInfo.full_name === 'string') ? userInfo.full_name.charAt(0) : "") + ((userInfo.last_name && typeof userInfo.last_name === 'string') ? userInfo.last_name.chatAt(0) : "") : "U";
+  const fullName = (userInfo.full_name ? userInfo.full_name : "User ") + (userInfo.last_name ? userInfo.last_name : "");
+  const userHeader = (userInfo.year ? ("U" + userInfo.year + " ") : "") + (userInfo.faculty ? userInfo.faculty : "Student");
 
   const uploadNewSchedule = async () => {
     // No permissions request is necessary for launching the image library
@@ -43,18 +52,15 @@ export default function AccountSettings() {
   }
 
   const deleteAccount = () => {
-    console.log("Are you sure you want to do that?");
+    setModalVisible(true);
   }
 
-//   useEffect(() => {
-//     fetchWrapper(`${BACKEND}/get-user-data`)
-//   },[])
 
   return (
     <ScrollView style={styles.scrollViewContainer}>
         <View style={styles.container}>
             <View style={styles.accountHeaderContainer}>
-                <UserImage initials="MC" />
+                <UserImage initials={initials} />
                 <View style={styles.accountHeaderText}>
                     <Text style={styles.headerText}>{fullName}</Text>
                     <Text style={styles.greyText}>{userHeader}</Text>
@@ -67,18 +73,22 @@ export default function AccountSettings() {
                     <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />
                 </Pressable>
                 <View style={styles.inputFieldContainer}>
-                    <View style={styles.fullNameContainer}>
-                        <AccountField title="First Name" value={tempUserData.fName}/>
-                        <AccountField title="Last Name" value={tempUserData.lName} style={{marginLeft: 10}}/>
+                    {(userInfo.first_name && userInfo.last_name) ? 
+                    <View style={styles.splitContainer}>
+                        <AccountField title="First Name" value={userInfo.first_name}/>
+                        <AccountField title="Last Name" value={userInfo.last_name} style={{marginLeft: 10}}/>
                     </View>
-                    <AccountField title="Student Number" value={tempUserData.studentNumber}/>
-                    <View style={styles.fullNameContainer}>
-                        <AccountField title="Country Code" value={"+" + tempUserData.countryCode} style={{flex:0}}/>
-                        <AccountField title="Phone Number" value={tempUserData.phoneNumber} style={{flex:4, marginLeft: 10}}/>
+                    : null}
+                    {userInfo.student_number ? <AccountField title="Student Number" value={userInfo.student_number}/> : null}
+                    {(userInfo.country_code && userInfo.phone_number) ? 
+                    <View style={styles.splitContainer}>
+                        <AccountField title="Country Code" value={"+" + userInfo.country_code} style={{flex:0}}/>
+                        <AccountField title="Phone Number" value={userInfo.phone_number} style={{flex:4, marginLeft: 10}}/>
                     </View>
-                    <AccountField title="Email" value={tempUserData.email}/>
-                    <AccountField title="Username" value={tempUserData.username} editable/>
-                    <AccountField title="Password" value={tempUserData.password} editable/>
+                    : null}
+                    {userInfo.email ? <AccountField title="Email" value={userInfo.email}/> : null}
+                    {userInfo.username ? <AccountField title="Username" value={userInfo.username} editable/> : null}
+                    {userInfo.password ? <AccountField title="Password" value={userInfo.password} editable/> : null}
                 </View>
                 <View style={styles.dangerZoneContainer}>
                     <Text style={styles.dangerZoneText}>Danger Zone</Text>
@@ -88,6 +98,7 @@ export default function AccountSettings() {
                 </View>
             </View>
         </View>
+        <ConfirmModal isVisible={modalVisible} text="password" placeholder={placeHolderPassword} setVisibility={(visibility) => {setModalVisible(visibility)}} />
     </ScrollView>
   )
 }
@@ -173,7 +184,7 @@ const styles = StyleSheet.create({
     inputFieldContainer: {
         marginVertical: 12
     }, 
-    fullNameContainer: {
+    splitContainer: {
         flexDirection: 'row',
     },
 })
