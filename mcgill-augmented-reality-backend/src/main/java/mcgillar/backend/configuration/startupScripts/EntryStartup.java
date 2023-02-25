@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import mcgillar.backend.model.location.Location;
 import mcgillar.backend.services.building.BuildingService;
 import mcgillar.backend.services.location.LocationService;
-import mcgillar.backend.services.user.AppUserInfoService;
 import mcgillar.backend.services.user.AppUserService;
 
 @Service
@@ -19,14 +18,8 @@ public class EntryStartup {
 
 	private AppUserService appUserService;
 
-	private AppUserInfoService appUserInfoService;
-
     public void startup() {
         appUserService.createUser("dev_user", "dev_pword");
-        appUserInfoService.addOrModifyCountryCodeAndPhoneNumber(1, "5147437101", "dev_user");
-		appUserInfoService.addOrModifyEmail("dev.user@mail.mcgill.ca", "dev_user");
-		appUserInfoService.addOrModifyFirstAndLastName("Dev", "User", "dev_user");
-		appUserInfoService.addOrModifyStudentNumber((long) 123456789, "dev_user");
         setUpBuildings();
     }
 
