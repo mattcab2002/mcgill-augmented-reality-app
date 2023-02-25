@@ -26,7 +26,7 @@ export default function AccountSettings() {
   });
 
   useEffect(() => {
-        fetchWrapper(`${BACKEND}/user-info/all-user-info`).then(
+        fetchWrapper(`${BACKEND}/user-info/`).then(
             (info) => {
                 const newUserInfo = {};
                 Object.keys(userInfo).forEach((key) => {
