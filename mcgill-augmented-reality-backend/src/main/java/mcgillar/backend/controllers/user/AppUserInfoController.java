@@ -32,7 +32,7 @@ public class AppUserInfoController {
      * 
      * Return all user info for given user
      */
-    @GetMapping("all-user-info")
+    @GetMapping()
     public ResponseEntity<UserInfoTO> getUserInfo(
         Authentication authentication
     ) {
