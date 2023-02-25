@@ -13,8 +13,18 @@ const encodeBase64 = (str) => {
 
 async function getToken(username, password) {
     const base64Encoded = encodeBase64(`${username}:${password}`);
-    const res = await fetch(`${BACKEND}/token`, { method: 'POST', headers: { 'Authorization': 'Basic ' + base64Encoded }});
-    return await res.text();
+    try {
+        const res = await fetch(`${BACKEND}/token`, { method: 'POST', headers: { Authorization: 'Basic ' + base64Encoded }});
+        const { status, ok } = await res;
+        if(!ok) {
+            console.error(`Unable to get token. Status Code: ${status} Message: ${res.statusText}`);
+            return;
+        }
+        return await res.text();
+    } catch (err) {
+        console.error("Something went wrong. Unable to get token. " + err);
+        return;
+    }
 }
 
 /**
@@ -35,22 +45,25 @@ export default async function fetchWrapper(
         console.error(
             'Invalid method provided. Methods available are: GET, POST, PUT, DELETE'
         );
+        return;
     }
     headers = {...headers, Authorization: 'Bearer ' + await getToken(USERNAME, PASSWORD)};
 
     let options = {
         method,
         ...(payload && method !== 'GET' && { body: JSON.stringify(payload) }),
-        ...(headers && { headers }),
+        ...(headers && { 'headers': headers })
     };
     try {
-        res = await fetch(endpoint, options);
-        if(res.status != 200) {
-            console.error("Bad request. Status Code:", res.status, res.statusText);
+        const res = await fetch(endpoint, options);
+        const { status, ok } = res;
+        if(!ok) {
+            console.error(`Bad request. Status Code: ${status} Message: ${res.statusText}`);
             return;
         }
         return await res.json();
     } catch (err) {
-        console.error(err);
+        console.error(`Unable to make ${method} request to ${endpoint} endpoint. ${err}`);
+        return;
     }
 }
