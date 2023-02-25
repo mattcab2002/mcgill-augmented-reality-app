@@ -1,8 +1,9 @@
 package mcgillar.backend.user;
 
 import mcgillar.backend.model.user.AppUser;
-import mcgillar.backend.repositories.AppUserRepository;
-import mcgillar.backend.services.AppUserService;
+import mcgillar.backend.repositories.user.AppUserRepository;
+import mcgillar.backend.services.user.AppUserService;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +17,10 @@ import static org.mockito.ArgumentMatchers.any;
 
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
