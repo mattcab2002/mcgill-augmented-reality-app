@@ -1,4 +1,4 @@
-import { ScrollView, Button, View, Text, Pressable, StyleSheet, Image } from 'react-native'
+import { ScrollView, Button, View, Text, Pressable, StyleSheet, Image, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import UserImage from '../components/UserImage'
 import AccountField from '../components/AccountField';
@@ -8,31 +8,42 @@ import * as ImagePicker from 'expo-image-picker';
 import ConfirmModal from '../components/ConfirmModal';
 
 export default function AccountSettings() {
+  const placeHolderPassword = "••••••••••••";
+
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    full_name: null,
-    last_name: null,
-    student_number: null,
+    firstName: null,
+    lastName: null,
+    studentNumber: null,
     email: null,
     username: null,
-    country_code: null,
-    phone_number: null,
+    countryCode: null,
+    phoneNumber: null,
     faculty: null,
-    year: null
+    year: null,
+    password: placeHolderPassword
   });
-  const placeHolderPassword = "••••••••••••";
 
   useEffect(() => {
-        fetchWrapper(`${BACKEND}/user-info/get-all-user-info`).then(
+        fetchWrapper(`${BACKEND}/user-info/all-user-info`).then(
             (info) => {
-                console.log(setUserInfo);
+                const newUserInfo = {};
+                Object.keys(userInfo).forEach((key) => {
+                    if(userInfo[key] == null) {
+                        newUserInfo[key] = info[key];
+                     } else {
+                        newUserInfo[key] = userInfo[key];
+                     }
+                })
+                newUserInfo["username"] = info.user.username;
+                setUserInfo(newUserInfo);
             }
         );
   },[])
 
-  const initials = (userInfo.first_name && userInfo.last_name) ? ((userInfo.full_name && typeof userInfo.full_name === 'string') ? userInfo.full_name.charAt(0) : "") + ((userInfo.last_name && typeof userInfo.last_name === 'string') ? userInfo.last_name.chatAt(0) : "") : "U";
-  const fullName = (userInfo.full_name ? userInfo.full_name : "User ") + (userInfo.last_name ? userInfo.last_name : "");
+  const initials = (userInfo.firstName && userInfo.lastName) ? ((userInfo.firstName && typeof userInfo.firstName === 'string') ? userInfo.firstName.charAt(0) : "") + ((userInfo.lastName && typeof userInfo.lastName === 'string') ? userInfo.lastName.charAt(0) : "") : "U";
+  const fullName = (userInfo.firstName ? (userInfo.firstName + " ") : "User ") + (userInfo.lastName ? userInfo.lastName : "");
   const userHeader = (userInfo.year ? ("U" + userInfo.year + " ") : "") + (userInfo.faculty ? userInfo.faculty : "Student");
 
   const uploadNewSchedule = async () => {
@@ -57,54 +68,59 @@ export default function AccountSettings() {
 
 
   return (
-    <ScrollView style={styles.scrollViewContainer}>
-        <View style={styles.container}>
-            <View style={styles.accountHeaderContainer}>
-                <UserImage initials={initials} />
-                <View style={styles.accountHeaderText}>
-                    <Text style={styles.headerText}>{fullName}</Text>
-                    <Text style={styles.greyText}>{userHeader}</Text>
-                    <Text style={styles.greyText}>McGill University</Text>
-                </View>
-            </View>
-            <View style={styles.userFieldsContainer}>
-                <Pressable onPress={uploadNewSchedule} style={styles.uploadScheduleButton}>
-                    <Text style={styles.uploadText}>Upload Schedule</Text>
-                    <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />
-                </Pressable>
-                <View style={styles.inputFieldContainer}>
-                    {(userInfo.first_name && userInfo.last_name) ? 
-                    <View style={styles.splitContainer}>
-                        <AccountField title="First Name" value={userInfo.first_name}/>
-                        <AccountField title="Last Name" value={userInfo.last_name} style={{marginLeft: 10}}/>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={styles.avoidingViewContainer} >
+        <ScrollView style={styles.scrollViewContainer}>
+            <View style={styles.container}>
+                <View style={styles.accountHeaderContainer}>
+                    <UserImage initials={initials} />
+                    <View style={styles.accountHeaderText}>
+                        <Text style={styles.headerText}>{fullName}</Text>
+                        <Text style={styles.greyText}>{userHeader}</Text>
+                        <Text style={styles.greyText}>McGill University</Text>
                     </View>
-                    : null}
-                    {userInfo.student_number ? <AccountField title="Student Number" value={userInfo.student_number}/> : null}
-                    {(userInfo.country_code && userInfo.phone_number) ? 
-                    <View style={styles.splitContainer}>
-                        <AccountField title="Country Code" value={"+" + userInfo.country_code} style={{flex:0}}/>
-                        <AccountField title="Phone Number" value={userInfo.phone_number} style={{flex:4, marginLeft: 10}}/>
-                    </View>
-                    : null}
-                    {userInfo.email ? <AccountField title="Email" value={userInfo.email}/> : null}
-                    {userInfo.username ? <AccountField title="Username" value={userInfo.username} editable/> : null}
-                    {userInfo.password ? <AccountField title="Password" value={userInfo.password} editable/> : null}
                 </View>
-                <View style={styles.dangerZoneContainer}>
-                    <Text style={styles.dangerZoneText}>Danger Zone</Text>
-                    <Pressable onPress={deleteAccount} style={styles.dangerZoneButton}>
-                        <Text style={styles.deleteAccount}>Delete Account</Text>
+                <View style={styles.userFieldsContainer}>
+                    <Pressable onPress={uploadNewSchedule} style={styles.uploadScheduleButton}>
+                        <Text style={styles.uploadText}>Upload Schedule</Text>
+                        <Image source={require('../assets/upload.png')} style={styles.uploadIcon} />
                     </Pressable>
+                    <View style={styles.inputFieldContainer}>
+                        {(userInfo.firstName && userInfo.lastName) ? 
+                        <View style={styles.splitContainer}>
+                            <AccountField title="First Name" value={userInfo.firstName}/>
+                            <AccountField title="Last Name" value={userInfo.lastName} style={{marginLeft: 10}}/>
+                        </View>
+                        : null}
+                        {userInfo.studentNumber ? <AccountField title="Student Number" value={String(userInfo.studentNumber)}/> : null}
+                        {(userInfo.countryCode && userInfo.phoneNumber) ? 
+                        <View style={styles.splitContainer}>
+                            <AccountField title="Country Code" value={"+" + userInfo.countryCode} style={{flex:0}}/>
+                            <AccountField title="Phone Number" value={userInfo.phoneNumber} style={{flex:4, marginLeft: 10}}/>
+                        </View>
+                        : null}
+                        {userInfo.email ? <AccountField title="Email" value={userInfo.email}/> : null}
+                        {userInfo.username ? <AccountField title="Username" value={userInfo.username} /> : null}
+                        {userInfo.password ? <AccountField title="Password" value={userInfo.password} /> : null}
+                    </View>
+                    <View style={styles.dangerZoneContainer}>
+                        <Text style={styles.dangerZoneText}>Danger Zone</Text>
+                        <Pressable onPress={deleteAccount} style={styles.dangerZoneButton}>
+                            <Text style={styles.deleteAccount}>Delete Account</Text>
+                        </Pressable>
+                    </View>
                 </View>
             </View>
-        </View>
-        <ConfirmModal isVisible={modalVisible} text="password" placeholder={placeHolderPassword} setVisibility={(visibility) => {setModalVisible(visibility)}} />
-    </ScrollView>
+            <ConfirmModal isVisible={modalVisible} text="password" placeholder={placeHolderPassword} setVisibility={(visibility) => {setModalVisible(visibility)}} />
+        </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 // <a href="https://www.flaticon.com/free-icons/upload" title="upload icons">Upload icons created by Ilham Fitrotul Hayat - Flaticon</a>
 
 const styles = StyleSheet.create({
+    avoidingViewContainer: {
+        flex: 1,
+    },
     container: {
         paddingHorizontal: 20,
         paddingTop: 60,

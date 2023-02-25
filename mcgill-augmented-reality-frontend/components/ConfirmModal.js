@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     prompt: {
-        marginBottom: 20
+        marginBottom: 20,
+        fontSize: 16
     },
     confirmButton: {
         marginTop: 6,
