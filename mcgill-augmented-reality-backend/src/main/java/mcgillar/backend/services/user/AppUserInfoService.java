@@ -16,7 +16,7 @@ public class AppUserInfoService {
 
     /**
      * 
-     * @param user to find or create AppUserInfo by
+     * @param username to find or create AppUserInfo by
      * @return new or existing AppUserInfo
      * 
      * to avoid conflicts when searching for non existing AppUserInfo
