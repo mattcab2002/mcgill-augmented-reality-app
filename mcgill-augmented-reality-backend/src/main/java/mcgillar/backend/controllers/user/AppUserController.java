@@ -16,12 +16,15 @@ import mcgillar.backend.TO.user.ValidatedUser;
 import mcgillar.backend.model.user.AppUser;
 import mcgillar.backend.services.user.AppUserService;
 
+import com.google.gson.Gson;
+
 @RestController
 @RequestMapping("/user/")
 @AllArgsConstructor
 public class AppUserController {
     
     private AppUserService appUserService;
+    private static final Gson gson = new Gson();
 
     @PostMapping("register")
     public ResponseEntity<ValidatedUser> registerUser(@RequestParam String username, @RequestParam String password) {
@@ -82,7 +85,7 @@ public class AppUserController {
     ) {
         String username = authentication.getName();
         appUserService.deleteAccount(username);
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
+        return new ResponseEntity<String>(gson.toJson("OK"), HttpStatus.OK);
     }
 
 }
