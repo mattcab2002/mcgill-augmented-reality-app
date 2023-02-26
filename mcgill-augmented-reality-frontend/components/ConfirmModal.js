@@ -1,20 +1,20 @@
-import { Text, StyleSheet, Pressable, TextInput, Modal, View } from 'react-native'
+import { Text, StyleSheet, Pressable, TextInput, Modal, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 export default function ConfirmModal(props) {
 
   return (
         <View style={styles.centeredView}>
-            <Modal animationType="slide" transparent={true} visible={props.isVisible} onRequestClose={() => { Alert.alert('Modal has been closed.'); setModalVisible(!modalVisible); }}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
+            <Modal animationType="slide" transparent={true} visible={props.isVisible} onRequestClose={() => {props.setVisibility(false)}}>
+                <TouchableOpacity style={styles.centeredView} onPress={() => {props.setVisibility(false)}} activeOpacity={1}>
+                    <TouchableOpacity style={styles.modalView} activeOpacity={1}>
                         <Text style={styles.prompt}>Please re-enter your {props.text} to confirm</Text>
                         <TextInput style={styles.input} placeholder={props.placeholder} placeholderTextColor="#000" secureTextEntry={props.text == 'password' ? true : false}/>
                         <Pressable onPress={() => {props.setVisibility(false)}} style={styles.confirmButton}>
                             <Text style={styles.confirmText}>Confirm</Text>
                         </Pressable>
-                    </View>
-                </View>
+                    </TouchableOpacity>
+                </TouchableOpacity>
             </Modal>
         </View>
   );
