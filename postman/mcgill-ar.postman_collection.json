@@ -7,35 +7,11 @@
 	},
 	"item": [
 		{
-			"name": "Register User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{backend}}/user/register?username={{dev_user}}&password={{dev_pword}}",
-					"host": [
-						"{{backend}}"
-					],
-					"path": [
-						"user",
-						"register"
-					],
-					"query": [
-						{
-							"key": "username",
-							"value": "{{dev_user}}"
-						},
-						{
-							"key": "password",
-							"value": "{{dev_pword}}"
-						}
-					]
-				}
-			},
-			"response": [
+			"name": "User Controller",
+			"item": [
 				{
 					"name": "Register User",
-					"originalRequest": {
+					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
@@ -59,57 +35,1034 @@
 							]
 						}
 					},
-					"status": "Created",
-					"code": 201,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
+							"name": "Register User",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user/register?username={{dev_user}}&password={{dev_pword}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user",
+										"register"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "{{dev_user}}"
+										},
+										{
+											"key": "password",
+											"value": "{{dev_pword}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 20 Feb 2023 19:34:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Username",
+					"event": [
 						{
-							"key": "X-XSS-Protection",
-							"value": "0"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, no-store, max-age=0, must-revalidate"
-						},
-						{
-							"key": "Pragma",
-							"value": "no-cache"
-						},
-						{
-							"key": "Expires",
-							"value": "0"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Mon, 20 Feb 2023 19:34:29 GMT"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=60"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {\r",
+									"\r",
+									"    // swap new_dev_user and dev_user\r",
+									"    const new_dev_user = environment.dev_user;\r",
+									"    postman.setEnvironmentVariable(\"dev_user\", environment.new_dev_user);\r",
+									"    postman.setEnvironmentVariable(\"new_dev_user\", new_dev_user);\r",
+									"\r",
+									"\r",
+									"// replace token with new token\r",
+									"    const tokenChars = pm.response.json().token;\r",
+									"    console.log(tokenChars);\r",
+									"    const correct = String(tokenChars)\r",
+									"    console.log(correct);\r",
+									"    postman.setEnvironmentVariable(\"dev_token\", correct)\r",
+									"\r",
+									"// fix dev_authorization if it is needed again with new pword\r",
+									"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
+									"    const base64Creds = btoa(creds);\r",
+									"    const encryptedCreds = String(base64Creds);\r",
+									"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
-					"cookie": [],
-					"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"change-username"
+							],
+							"query": [
+								{
+									"key": "newUsername",
+									"value": "{{new_dev_user}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change Username",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{dev_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user",
+										"change-username"
+									],
+									"query": [
+										{
+											"key": "newUsername",
+											"value": "{{new_dev_user}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 20 Feb 2023 19:07:10 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"username\": \"test_name2\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": \"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidGVzdF9uYW1lMiIsImV4cCI6MTY3NjkyMDE1MCwiaWF0IjoxNjc2OTIwMDMwLCJzY29wZSI6WyJNRU1CRVIiXX0.Suf7nrgCvWhk7o7lVN0Tvd5LAAjQnrDCDYBZQsePbYIYC9-Ge-fv_Y4fctieyu93BsQd8f9ZW-EwKtjiCiLEamHr5vpBsZVoY_naLVh6d4pXPaMWyEEBkSBlTMRWvqcs7oLGrHspfpeJWJXtymWpw8r8xcITyvjCwXHcztWaHZgqH-MmU4E38CMzQmUMYeFH2NARAK5dW9mRARL1k1u60ApXe8Wzt0t9rdnQamuyJgKDTswlgzOO6a4Mp6rpvnybI3ZvheLt1DfAkLNsxxRSPNse0k0KIlY8w5GCEenyKxPEBp0EUGHf7UgLRRsm5nPbwrCWaDFYnt5M0el2CresHg\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {\r",
+									"\r",
+									"    // swap dev_pword and new_dev_pword\r",
+									"    const new_dev_pword = environment.dev_pword;\r",
+									"    postman.setEnvironmentVariable(\"dev_pword\", environment.new_dev_pword);\r",
+									"    postman.setEnvironmentVariable(\"new_dev_pword\", new_dev_pword);\r",
+									"\r",
+									"// fix dev_authorization if it is needed again with new pword\r",
+									"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
+									"    const base64Creds = btoa(creds);\r",
+									"    const encryptedCreds = String(base64Creds);\r",
+									"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"change-password"
+							],
+							"query": [
+								{
+									"key": "newPassword",
+									"value": "{{new_dev_pword}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change Password",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{dev_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user",
+										"change-password"
+									],
+									"query": [
+										{
+											"key": "newPassword",
+											"value": "{{new_dev_pword}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 20 Feb 2023 19:33:14 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic {{dev_authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{backend}}/user/delete-account",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user",
+								"delete-account"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete User",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic {{dev_authorization}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{backend}}/user/delete-account",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user",
+										"delete-account"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 25 Feb 2023 19:06:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "OK"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User Info Controller",
+			"item": [
+				{
+					"name": "Get User Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user-info/",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user-info",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User Info",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user-info/",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user-info",
+										""
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Feb 2023 19:01:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"firstName\": \"Dev\",\n    \"lastName\": \"User\",\n    \"studentNumber\": 123456789,\n    \"phoneNumber\": \"5147437101\",\n    \"countryCode\": 1,\n    \"email\": \"dev.user@mail.mcgill.ca\",\n    \"schedule\": null,\n    \"friends\": null,\n    \"favouriteBuildings\": [],\n    \"user\": {\n        \"username\": \"dev_user\",\n        \"authorities\": [\n            \"MEMBER\"\n        ],\n        \"token\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Change user first and last name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {",
+									"",
+									"    // swap dev_firstname and new_dev_firstname",
+									"    const new_dev_firstname = environment.dev_firstname;",
+									"    postman.setEnvironmentVariable(\"dev_firstname\", environment.new_dev_firstname);",
+									"    postman.setEnvironmentVariable(\"new_dev_firstname\", new_dev_firstname);",
+									"",
+									"    // swap dev_lastname and new_dev_lastname",
+									"    const new_dev_lastname= environment.dev_lastname;",
+									"    postman.setEnvironmentVariable(\"dev_lastname\", environment.new_dev_lastname);",
+									"    postman.setEnvironmentVariable(\"new_dev_lastname\", new_dev_lastname);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user-info/first-last-name?firstName={{new_dev_firstname}}&lastName={{new_dev_lastname}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user-info",
+								"first-last-name"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "{{new_dev_firstname}}"
+								},
+								{
+									"key": "lastName",
+									"value": "{{new_dev_lastname}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change user first and last name",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user-info/first-last-name?firstName={{new_dev_firstname}}&lastName={{new_dev_lastname}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user-info",
+										"first-last-name"
+									],
+									"query": [
+										{
+											"key": "firstName",
+											"value": "{{new_dev_firstname}}"
+										},
+										{
+											"key": "lastName",
+											"value": "{{new_dev_lastname}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Feb 2023 19:01:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"firstName\": \"Dev1\",\n    \"lastName\": \"user1\",\n    \"studentNumber\": 123456789,\n    \"phoneNumber\": \"5147437101\",\n    \"countryCode\": 1,\n    \"email\": \"dev.user@mail.mcgill.ca\",\n    \"schedule\": null,\n    \"friends\": null,\n    \"favouriteBuildings\": [],\n    \"user\": {\n        \"username\": \"dev_user\",\n        \"authorities\": [\n            \"MEMBER\"\n        ],\n        \"token\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Change user phone number and country code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {",
+									"",
+									"    // swap dev_country and new_dev_country",
+									"    const new_dev_country = environment.dev_country;",
+									"    postman.setEnvironmentVariable(\"dev_country\", environment.new_dev_country);",
+									"    postman.setEnvironmentVariable(\"new_dev_country\", new_dev_country);",
+									"",
+									"    // swap dev_phone and new_dev_phone",
+									"    const new_dev_phone= environment.dev_phone;",
+									"    postman.setEnvironmentVariable(\"dev_phone\", environment.new_dev_phone);",
+									"    postman.setEnvironmentVariable(\"new_dev_phone\", new_dev_phone);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user-info/country-code-phone-number?countryCode={{new_dev_country}}&phoneNumber={{new_dev_phone}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user-info",
+								"country-code-phone-number"
+							],
+							"query": [
+								{
+									"key": "countryCode",
+									"value": "{{new_dev_country}}"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "{{new_dev_phone}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change user phone number and country code",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user-info/country-code-phone-number?countryCode={{new_dev_country}}&phoneNumber={{new_dev_phone}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user-info",
+										"country-code-phone-number"
+									],
+									"query": [
+										{
+											"key": "countryCode",
+											"value": "{{new_dev_country}}"
+										},
+										{
+											"key": "phoneNumber",
+											"value": "{{new_dev_phone}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Feb 2023 19:01:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"firstName\": \"Dev\",\n    \"lastName\": \"user\",\n    \"studentNumber\": 123456789,\n    \"phoneNumber\": \"5147437102\",\n    \"countryCode\": 2,\n    \"email\": \"dev.user@mail.mcgill.ca\",\n    \"schedule\": null,\n    \"friends\": null,\n    \"favouriteBuildings\": [],\n    \"user\": {\n        \"username\": \"dev_user\",\n        \"authorities\": [\n            \"MEMBER\"\n        ],\n        \"token\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Change user email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {",
+									"",
+									"    // swap dev_email and new_dev_email",
+									"    const new_dev_email= environment.dev_email;",
+									"    postman.setEnvironmentVariable(\"dev_email\", environment.new_dev_email);",
+									"    postman.setEnvironmentVariable(\"new_dev_email\", new_dev_email);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user-info/email?email={{new_dev_email}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user-info",
+								"email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{new_dev_email}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change user email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user-info/email?email={{new_dev_email}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user-info",
+										"email"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "{{new_dev_email}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Feb 2023 19:02:10 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"firstName\": \"Dev\",\n    \"lastName\": \"user\",\n    \"studentNumber\": 123456789,\n    \"phoneNumber\": \"5147437101\",\n    \"countryCode\": 1,\n    \"email\": \"dev.user1@mail.mcgill.ca\",\n    \"schedule\": null,\n    \"friends\": null,\n    \"favouriteBuildings\": [],\n    \"user\": {\n        \"username\": \"dev_user\",\n        \"authorities\": [\n            \"MEMBER\"\n        ],\n        \"token\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Change user student-number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (responseCode.code === 202) {",
+									"",
+									"    // swap dev_email and new_dev_email",
+									"    const new_dev_student_number= environment.dev_student_number;",
+									"    postman.setEnvironmentVariable(\"dev_student_number\", environment.new_dev_student_number);",
+									"    postman.setEnvironmentVariable(\"new_dev_student_number\", new_dev_student_number);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/user-info/student-number?studentNumber={{new_dev_student_number}}",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"user-info",
+								"student-number"
+							],
+							"query": [
+								{
+									"key": "studentNumber",
+									"value": "{{new_dev_student_number}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Change user student-number",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{backend}}/user-info/student-number?studentNumber={{new_dev_student_number}}",
+									"host": [
+										"{{backend}}"
+									],
+									"path": [
+										"user-info",
+										"student-number"
+									],
+									"query": [
+										{
+											"key": "studentNumber",
+											"value": "{{new_dev_student_number}}"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 26 Feb 2023 19:02:18 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"firstName\": \"Dev\",\n    \"lastName\": \"user\",\n    \"studentNumber\": 123456788,\n    \"phoneNumber\": \"5147437101\",\n    \"countryCode\": 1,\n    \"email\": \"dev.user1@mail.mcgill.ca\",\n    \"schedule\": null,\n    \"friends\": null,\n    \"favouriteBuildings\": [],\n    \"user\": {\n        \"username\": \"dev_user\",\n        \"authorities\": [\n            \"MEMBER\"\n        ],\n        \"token\": null\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -143,6 +1096,9 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -252,13 +1208,7 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{dev_token}}",
-						"type": "text"
-					}
-				],
+				"header": [],
 				"url": {
 					"raw": "{{backend}}/building/get-all-mcgill-buildings",
 					"host": [
@@ -346,282 +1296,36 @@
 					"body": "[\n    {\n        \"id\": 1,\n        \"location\": {\n            \"id\": 1,\n            \"postalCode\": \"H3A 2B3\",\n            \"address\": \"3630 Rue University, Montreal QC\",\n            \"latitude\": 45.507392652505075,\n            \"longitude\": -73.57878717972841,\n            \"altitude\": null\n        },\n        \"name\": \"Troitter Building\",\n        \"shortCode\": \"ENGTR\"\n    },\n    {\n        \"id\": 2,\n        \"location\": {\n            \"id\": 2,\n            \"postalCode\": \"H3A 0C5\",\n            \"address\": \"3610 Rue University, Montreal QC\",\n            \"latitude\": 45.5066955721648,\n            \"longitude\": -73.57862770873622,\n            \"altitude\": null\n        },\n        \"name\": \"M. H. Wong Building\",\n        \"shortCode\": \"MH\"\n    },\n    {\n        \"id\": 3,\n        \"location\": {\n            \"id\": 3,\n            \"postalCode\": \"H3A 0G1\",\n            \"address\": \"740 Dr Penfield Ave, Montreal QC\",\n            \"latitude\": 45.50693645707051,\n            \"longitude\": -73.57930870936448,\n            \"altitude\": null\n        },\n        \"name\": \"McGill Genome Center\",\n        \"shortCode\": \"GC\"\n    },\n    {\n        \"id\": 4,\n        \"location\": {\n            \"id\": 4,\n            \"postalCode\": \"H3A 0B8\",\n            \"address\": \"680 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.50482034608999,\n            \"longitude\": -73.57340365102091,\n            \"altitude\": null\n        },\n        \"name\": \"680 Sherbrooke\",\n        \"shortCode\": \"680\"\n    },\n    {\n        \"id\": 5,\n        \"location\": {\n            \"id\": 5,\n            \"postalCode\": \"H2X 2G6\",\n            \"address\": \"3380 Blvd Robert-Bourassa, Montreal QC\",\n            \"latitude\": 45.50611767441953,\n            \"longitude\": -73.57644933043366,\n            \"altitude\": null\n        },\n        \"name\": \"McConnell Engineering Building\",\n        \"shortCode\": \"ENGMC\"\n    },\n    {\n        \"id\": 6,\n        \"location\": {\n            \"id\": 6,\n            \"postalCode\": \"H3A 0C3\",\n            \"address\": \"817 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.5055989496,\n            \"longitude\": -73.5766544175,\n            \"altitude\": null\n        },\n        \"name\": \"Macdonald Engineering Building\",\n        \"shortCode\": \"MC\"\n    },\n    {\n        \"id\": 7,\n        \"location\": {\n            \"id\": 7,\n            \"postalCode\": \"H3A 2T7\",\n            \"address\": \"855 Sherbrooke St W, Montreal, QC\",\n            \"latitude\": 45.50432,\n            \"longitude\": -73.57793,\n            \"altitude\": null\n        },\n        \"name\": \"Stephen Leacock Building\",\n        \"shortCode\": \"LEA\"\n    },\n    {\n        \"id\": 8,\n        \"location\": {\n            \"id\": 8,\n            \"postalCode\": \"H3A 0E8\",\n            \"address\": \"3450 University Street, Montreal QC\",\n            \"latitude\": 45.5057672817931,\n            \"longitude\": -73.57522258870566,\n            \"altitude\": null\n        },\n        \"name\": \"Frank Dawson Adams Building\",\n        \"shortCode\": \"FDA\"\n    },\n    {\n        \"id\": 9,\n        \"location\": {\n            \"id\": 9,\n            \"postalCode\": \"H3A OC2\",\n            \"address\": \"815 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.505550605528406,\n            \"longitude\": -73.57575977336441,\n            \"altitude\": null\n        },\n        \"name\": \"Macdonald-Harrington Building\",\n        \"shortCode\": \"MDHAR\"\n    },\n    {\n        \"id\": 10,\n        \"location\": {\n            \"id\": 10,\n            \"postalCode\": \"H3A 0B8\",\n            \"address\": \"801 Sherbrooke St W, Montreal QC\",\n            \"latitude\": 45.50512340287696,\n            \"longitude\": -73.57406918870562,\n            \"altitude\": null\n        },\n        \"name\": \"Maass Chemistry Building\",\n        \"shortCode\": \"MAASS\"\n    }\n]"
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{dev_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "Change Password",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"if (responseCode.code === 202) {\r",
-							"\r",
-							"    // swap dev_pword and new_dev_pword\r",
-							"    const new_dev_pword = environment.dev_pword;\r",
-							"    postman.setEnvironmentVariable(\"dev_pword\", environment.new_dev_pword);\r",
-							"    postman.setEnvironmentVariable(\"new_dev_pword\", new_dev_pword);\r",
-							"\r",
-							"// fix dev_authorization if it is needed again with new pword\r",
-							"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
-							"    const base64Creds = btoa(creds);\r",
-							"    const encryptedCreds = String(base64Creds);\r",
-							"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{dev_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
-					"host": [
-						"{{backend}}"
-					],
-					"path": [
-						"user",
-						"change-password"
-					],
-					"query": [
-						{
-							"key": "newPassword",
-							"value": "{{new_dev_pword}}"
-						}
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "Change Password",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{dev_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{backend}}/user/change-password?newPassword={{new_dev_pword}}",
-							"host": [
-								"{{backend}}"
-							],
-							"path": [
-								"user",
-								"change-password"
-							],
-							"query": [
-								{
-									"key": "newPassword",
-									"value": "{{new_dev_pword}}"
-								}
-							]
-						}
-					},
-					"status": "Accepted",
-					"code": 202,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "X-XSS-Protection",
-							"value": "0"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, no-store, max-age=0, must-revalidate"
-						},
-						{
-							"key": "Pragma",
-							"value": "no-cache"
-						},
-						{
-							"key": "Expires",
-							"value": "0"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Mon, 20 Feb 2023 19:33:14 GMT"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=60"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"username\": \"test_name\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": null\n}"
-				}
-			]
-		},
-		{
-			"name": "Change Username",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"if (responseCode.code === 202) {\r",
-							"\r",
-							"    // swap new_dev_user and dev_user\r",
-							"    const new_dev_user = environment.dev_user;\r",
-							"    postman.setEnvironmentVariable(\"dev_user\", environment.new_dev_user);\r",
-							"    postman.setEnvironmentVariable(\"new_dev_user\", new_dev_user);\r",
-							"\r",
-							"\r",
-							"// replace token with new token\r",
-							"    const tokenChars = pm.response.json().token;\r",
-							"    console.log(tokenChars);\r",
-							"    const correct = String(tokenChars)\r",
-							"    console.log(correct);\r",
-							"    postman.setEnvironmentVariable(\"dev_token\", correct)\r",
-							"\r",
-							"// fix dev_authorization if it is needed again with new pword\r",
-							"    const creds = environment.dev_user + \":\" + environment.dev_pword;\r",
-							"    const base64Creds = btoa(creds);\r",
-							"    const encryptedCreds = String(base64Creds);\r",
-							"    postman.setEnvironmentVariable(\"dev_authorization\", encryptedCreds);\r",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{dev_token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
-					"host": [
-						"{{backend}}"
-					],
-					"path": [
-						"user",
-						"change-username"
-					],
-					"query": [
-						{
-							"key": "newUsername",
-							"value": "{{new_dev_user}}"
-						}
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "Change Username",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{dev_token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{backend}}/user/change-username?newUsername={{new_dev_user}}",
-							"host": [
-								"{{backend}}"
-							],
-							"path": [
-								"user",
-								"change-username"
-							],
-							"query": [
-								{
-									"key": "newUsername",
-									"value": "{{new_dev_user}}"
-								}
-							]
-						}
-					},
-					"status": "Accepted",
-					"code": 202,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "X-XSS-Protection",
-							"value": "0"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, no-store, max-age=0, must-revalidate"
-						},
-						{
-							"key": "Pragma",
-							"value": "no-cache"
-						},
-						{
-							"key": "Expires",
-							"value": "0"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Mon, 20 Feb 2023 19:07:10 GMT"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=60"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"username\": \"test_name2\",\n    \"authorities\": [\n        \"MEMBER\"\n    ],\n    \"token\": \"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJzZWxmIiwic3ViIjoidGVzdF9uYW1lMiIsImV4cCI6MTY3NjkyMDE1MCwiaWF0IjoxNjc2OTIwMDMwLCJzY29wZSI6WyJNRU1CRVIiXX0.Suf7nrgCvWhk7o7lVN0Tvd5LAAjQnrDCDYBZQsePbYIYC9-Ge-fv_Y4fctieyu93BsQd8f9ZW-EwKtjiCiLEamHr5vpBsZVoY_naLVh6d4pXPaMWyEEBkSBlTMRWvqcs7oLGrHspfpeJWJXtymWpw8r8xcITyvjCwXHcztWaHZgqH-MmU4E38CMzQmUMYeFH2NARAK5dW9mRARL1k1u60ApXe8Wzt0t9rdnQamuyJgKDTswlgzOO6a4Mp6rpvnybI3ZvheLt1DfAkLNsxxRSPNse0k0KIlY8w5GCEenyKxPEBp0EUGHf7UgLRRsm5nPbwrCWaDFYnt5M0el2CresHg\"\n}"
-				}
-			]
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
