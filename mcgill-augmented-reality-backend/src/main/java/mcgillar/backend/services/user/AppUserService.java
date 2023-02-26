@@ -57,6 +57,7 @@ public class AppUserService implements UserDetailsService {
         if (password == null || password.isEmpty())
             throw new IllegalArgumentException("Password can't be empty");
 
+            
         try {
             // checkPassword(password);
         }catch(Exception e) {
