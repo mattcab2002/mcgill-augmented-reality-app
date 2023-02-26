@@ -50,11 +50,31 @@ public class AppUserService implements UserDetailsService {
      */
     public AppUser createUser(String username, String password) {
         AppUser newUser = new AppUser();
+
+        if (username == null || username.isEmpty()) 
+            throw new IllegalArgumentException("Username can't be empty");
+
+        if (password == null || password.isEmpty())
+            throw new IllegalArgumentException("Password can't be empty");
+
+        try {
+            // checkPassword(password);
+        }catch(Exception e) {
+
+        }
         newUser.setUsername(username);
         newUser.getAuthorities().add(AppUserAuthority.MEMBER);
         newUser.setPasswordHash(passwordEncoder.encode(password));
         return appUserRepository.save(newUser);
     }
+
+    // private boolean checkPassword(String password) throws IllegalArgumentException {
+    //     String message;
+    
+    //     if (password.length() < 8) throw new IllegalArgumentException("Password needs to be at least 8 characters");
+
+
+    // }
 
 
     /**
