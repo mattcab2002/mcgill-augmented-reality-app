@@ -1,16 +1,34 @@
 import { Text, StyleSheet, Pressable, TextInput, Modal, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
+import fetchWrapper, {getToken} from '../api.js';
+import {BACKEND, USERNAME} from '@env';
 
 export default function ConfirmModal(props) {
+  const [input, setInput] = useState('');
 
+  const confirmHandler = async () => {
+    // make request to token endpoint and check status to see if valid pass
+    const token = await getToken(USERNAME, input);   
+    if(token != null) {
+        // means valid password
+        fetchWrapper(`${BACKEND}/user/delete-account`, null, null, 'DELETE').then((res) => {
+//            if(res != something) {
+//                setErrorMessage and ask to try again
+//            } else
+                console.log("Account deleted.");
+        })
+    }
+    props.setVisibility(false);
+  }
+      
   return (
         <View style={styles.centeredView}>
             <Modal animationType="slide" transparent={true} visible={props.isVisible} onRequestClose={() => {props.setVisibility(false)}}>
                 <TouchableOpacity style={styles.centeredView} onPress={() => {props.setVisibility(false)}} activeOpacity={1}>
                     <TouchableOpacity style={styles.modalView} activeOpacity={1}>
                         <Text style={styles.prompt}>Please re-enter your {props.text} to confirm</Text>
-                        <TextInput style={styles.input} placeholder={props.placeholder} placeholderTextColor="#000" secureTextEntry={props.text == 'password' ? true : false}/>
-                        <Pressable onPress={() => {props.setVisibility(false)}} style={styles.confirmButton}>
+                        <TextInput style={styles.input} placeholder={props.placeholder} placeholderTextColor="#000" secureTextEntry={props.text == 'password' ? true : false} onChangeText={(text) => {setInput(text)}} />
+                        <Pressable onPress={confirmHandler} style={styles.confirmButton}>
                             <Text style={styles.confirmText}>Confirm</Text>
                         </Pressable>
                     </TouchableOpacity>
@@ -53,7 +71,7 @@ const styles = StyleSheet.create({
         height: 45,
         paddingLeft: 10,
         minWidth: 200,
-        marginBottom: 20
+        marginBottom: 20,
     },
     prompt: {
         marginBottom: 20,
