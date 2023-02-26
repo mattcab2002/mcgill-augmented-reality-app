@@ -11,7 +11,7 @@ const encodeBase64 = (str) => {
     return base64Url(crypto.enc.Base64.stringify(encodedWord));
 }
 
-async function getToken(username, password) {
+export async function getToken(username, password) {
     const base64Encoded = encodeBase64(`${username}:${password}`);
     try {
         const res = await fetch(`${BACKEND}/token`, { method: 'POST', headers: { Authorization: 'Basic ' + base64Encoded }});
