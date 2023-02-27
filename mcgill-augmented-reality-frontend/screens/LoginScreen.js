@@ -12,10 +12,10 @@ function LoginScreen({ navigation }) {
     function handlePress() {
         getTokenRes(email, password)
         .then(res => {
-            if (res.status == 200) {
-                // navigation.navigate('nextScreenName');
+            if (res.ok) {
                 storeEmail(email);
                 storeToken(res.text());
+                // navigation.navigate('nextScreenName');
             } else {
                 setIsErrowShow(true);
             }
@@ -43,6 +43,7 @@ function LoginScreen({ navigation }) {
                     onChangeText={onChangePassword}
                     value={password} 
                     placeholder='Password'
+                    secureTextEntry={true}
                 />
                 <View style={styles.spaceSmall}/>
                 <Text style={{

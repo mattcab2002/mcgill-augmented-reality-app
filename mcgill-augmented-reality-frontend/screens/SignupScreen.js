@@ -7,15 +7,23 @@ function SignupScreen({ navigation }) {
     const [name, onChangeName] = useState('');
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
+    const [isErrorShow, setIsErrowShow] = useState(false);
 
     function handlePress() {
-        registerUser(email, password)
-        .then(res => {
-            if (res.status !== 200) {
-                console.log(res.error())
-            }
-        })
-        // navigation.navigate('nextScreenName');
+        let valid = email.includes('@') && email.includes('.');
+
+        if (valid) {
+            registerUser(email, password)
+            .then(res => {
+                if (!res.ok) {
+                    console.log(res.error())
+                }
+            });
+            // navigation.navigate('nextScreenName');
+        } else {
+            setIsErrowShow(true);
+        }
+        
     }
 
     return (
@@ -46,7 +54,18 @@ function SignupScreen({ navigation }) {
                     onChangeText={onChangePassword}
                     value={password} 
                     placeholder='Password'
+                    secureTextEntry={true}
                 />
+                <View style={styles.spaceSmall}/>
+                <Text style={{
+                    color: 'red',
+                    fontSize: 15,
+                    textAlign: 'center',
+                    width: '80%',
+                    opacity: isErrorShow ? 1 : 0
+                }}>
+                    Please enter a valid email.
+                </Text>
                 <View style={styles.spaceLarge}/>
                 <TouchableOpacity style={styles.button} onPress={handlePress}>
                     <Text style={styles.buttonText}>Create Account</Text>
