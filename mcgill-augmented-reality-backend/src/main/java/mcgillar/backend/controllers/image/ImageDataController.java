@@ -19,28 +19,56 @@ public class ImageDataController {
 
     private ImageDataService imageDataService;
 
-    @PostMapping
-    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+    @PostMapping("schedule")
+    public ResponseEntity<?> uploadScheduleImage(@RequestParam("image") MultipartFile file) throws IOException {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        imageDataService.uploadImage(file, name);
+        imageDataService.uploadImage(file, "schedule_" + name);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("info/")
-    public ResponseEntity<?>  getImageInfoByName(){
+    @PostMapping("profile")
+    public ResponseEntity<?> uploadProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        ImageData image = imageDataService.getInfoByImageByName(name);
+
+        imageDataService.uploadImage(file, "profile_" + name);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("info/schedule")
+    public ResponseEntity<?>  getScheduleImageInfoByName(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        ImageData image = imageDataService.getInfoByImageByName("schedule_" + name);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(image);
     }
 
-    @GetMapping()
-    public ResponseEntity<?>  getImageByName(){
+    @GetMapping("info/profile")
+    public ResponseEntity<?>  getProfileImageInfoByName(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        byte[] image = imageDataService.getImage(name);
+        ImageData image = imageDataService.getInfoByImageByName("profile_" + name);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(image);
+    }
+
+    @GetMapping("schedule")
+    public ResponseEntity<?>  getScheduleImageByName(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        byte[] image = imageDataService.getImage("schedule_" + name);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
+    }
+
+    @GetMapping("profile")
+    public ResponseEntity<?>  getProfileImageByName(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        byte[] image = imageDataService.getImage("profile_" + name);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
