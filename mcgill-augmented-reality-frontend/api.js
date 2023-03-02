@@ -1,23 +1,32 @@
-import * as crypto from 'crypto-js';
-import Base64 from 'crypto-js/enc-base64';
-import { BACKEND, USERNAME, PASSWORD } from '@env';
+import * as crypto from "crypto-js";
+import Base64 from "crypto-js/enc-base64";
+import { BACKEND, USERNAME, PASSWORD } from "@env";
 
 const base64Url = (str) => {
-    return str.toString(Base64).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-}
+    return str
+        .toString(Base64)
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+};
 
 const encodeBase64 = (str) => {
-    let encodedWord = crypto.enc.Utf8.parse(str)
+    let encodedWord = crypto.enc.Utf8.parse(str);
     return base64Url(crypto.enc.Base64.stringify(encodedWord));
-}
+};
 
 export async function getToken(username, password) {
     const base64Encoded = encodeBase64(`${username}:${password}`);
     try {
-        const res = await fetch(`${BACKEND}/token`, { method: 'POST', headers: { Authorization: 'Basic ' + base64Encoded }});
+        const res = await fetch(`${BACKEND}/token`, {
+            method: "POST",
+            headers: { Authorization: "Basic " + base64Encoded },
+        });
         const { status, ok } = await res;
-        if(!ok) {
-            console.error(`Unable to get token. Status Code: ${status} Message: ${res.statusText}`);
+        if (!ok) {
+            console.error(
+                `Unable to get token. Status Code: ${status} Message: ${res.statusText}`
+            );
             return;
         }
         return await res.text();
@@ -37,33 +46,53 @@ export async function getToken(username, password) {
  */
 export default async function fetchWrapper(
     endpoint,
-    payload = null,
     headers = null,
-    method = 'GET'
+    method = "GET",
+    payload = null
 ) {
-    if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method)) {
+    let json = false;
+
+    if (!["GET", "POST", "PUT", "DELETE"].includes(method)) {
         console.error(
-            'Invalid method provided. Methods available are: GET, POST, PUT, DELETE'
+            "Invalid method provided. Methods available are: GET, POST, PUT, DELETE"
         );
         return;
     }
-    headers = {...headers, Authorization: 'Bearer ' + await getToken(USERNAME, PASSWORD)};
+    if (
+        headers &&
+        Object.hasOwn(headers, "Content-Type") &&
+        headers["Content-Type"] == "application/json"
+    ) {
+        json = true;
+    }
+    headers = {
+        ...headers,
+        Authorization: "Bearer " + (await getToken(USERNAME, PASSWORD)),
+    };
 
     let options = {
         method,
-        ...(payload && method !== 'GET' && { body: JSON.stringify(payload) }),
-        ...(headers && { 'headers': headers })
+        ...(payload && method !== "GET" && { body: payload }),
+        ...(headers && { headers: headers }),
     };
     try {
         const res = await fetch(endpoint, options);
         const { status, ok } = res;
-        if(!ok) {
-            console.error(`Bad request. Status Code: ${status} Message: ${res.statusText}`);
+        if (!ok) {
+            console.error(
+                `Bad request. Status Code: ${status} Message: ${res.statusText}`
+            );
             return;
         }
-        return await res.json();
+        if (json) {
+            // want json
+            return await res.json();
+        }
+        return res;
     } catch (err) {
-        console.error(`Unable to make ${method} request to ${endpoint} endpoint. ${err}`);
+        console.error(
+            `Unable to make ${method} request to ${endpoint} endpoint. ${err}`
+        );
         return;
     }
 }
