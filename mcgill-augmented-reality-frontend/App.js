@@ -1,7 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { StatusBar } from 'expo-status-bar';
+import getPath from './path-finder';
+
 export default function App() {
+
+  getPath(null, null);
   return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
