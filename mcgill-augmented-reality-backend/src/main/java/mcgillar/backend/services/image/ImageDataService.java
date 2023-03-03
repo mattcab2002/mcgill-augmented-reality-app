@@ -46,5 +46,10 @@ public class ImageDataService {
         return Optional.empty();
     }
 
+    @Transactional
+    public void deleteImage(String name) {
+        Optional<ImageData> dbImage = imageDataRepository.findByName(name);
+        dbImage.ifPresent(imageData -> imageDataRepository.delete(imageData));
+    }
 
 }

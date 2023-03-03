@@ -76,5 +76,18 @@ public class ImageDataController {
 
     }
 
+    @DeleteMapping("schedule")
+    public ResponseEntity<?> deleteScheduleImageByName() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        imageDataService.deleteImage("schedule_" + name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("profile")
+    public ResponseEntity<?> deleteProfileImageByName() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        imageDataService.deleteImage("profile_" + name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
