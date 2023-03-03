@@ -3,6 +3,7 @@ package mcgillar.backend.services.user;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import mcgillar.backend.model.schedule.WeeklySchedule;
 import mcgillar.backend.model.user.AppUser;
 import mcgillar.backend.model.user.AppUserInfo;
 import mcgillar.backend.repositories.user.AppUserInfoRepository;
@@ -89,5 +90,13 @@ public class AppUserInfoService {
         AppUserInfo info = createOrReturnExistingInfoByUser(username);
         if (studentNumber != null) info.setStudentNumber(studentNumber);
         return appUserInfoRepository.save(info);
+    }
+
+    public AppUserInfo save(AppUserInfo userInfo) {
+        return appUserInfoRepository.save(userInfo);
+    }
+
+    public AppUserInfo findInfoBySchdule(WeeklySchedule schedule) {
+        return appUserInfoRepository.findAppUserInfoBySchedule(schedule);
     }
 }
