@@ -7,6 +7,7 @@ import {
     Image,
     KeyboardAvoidingView,
     Platform,
+    Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import UserImage from "../components/UserImage";
@@ -39,6 +40,9 @@ export default function AccountSettings() {
         year: null,
         password: placeHolderPassword,
     });
+    const createImageSizeTooLargeAlert = () => {
+        return Alert.alert("The image you tried to upload is too large. Please reduce it's size and try again.");
+    }
 
     useEffect(() => {
         fetchWrapper(`${BACKEND}/user-info/`, {
@@ -133,14 +137,19 @@ export default function AccountSettings() {
             fetchWrapper(
                 `${BACKEND}/image/schedule`,
                 { "Content-Type": "multipart/form-data" },
-                "POST",
+                "PUT",
                 imageData
             ).then((res) => {
-                if (res.ok) {
-                    console.log("Schedule uploaded.");
-                    setSchedule({ uri: upload.uri, name: fileName });
+                if(res) {
+                    if (res.ok) {
+                        console.log("Schedule uploaded.");
+                        setSchedule({ uri: upload.uri, name: fileName });
+                    } else {
+                        console.log("Failed to upload schedule.");
+                    }
                 } else {
-                    console.log("Failed to upload schedule.");
+                    // can assume file too large
+                    createImageSizeTooLargeAlert();
                 }
             });
         }
@@ -163,12 +172,13 @@ export default function AccountSettings() {
                 <View style={styles.container}>
                     <View style={styles.accountHeaderContainer}>
                         <UserImage
-                            initials={!profilePicture ? initials : null}
+                            initials={!profilePicture.uri ? initials : null}
                             username={userInfo.username}
                             setProfilePicture={(image) => {
                                 setProfilePicture(image);
                             }}
                             imageSource={profilePicture.uri}
+                            imageSizeAlertHandler={() => createImageSizeTooLargeAlert()}
                         />
                         <View style={styles.accountHeaderText}>
                             <Text style={styles.headerText}>{fullName}</Text>

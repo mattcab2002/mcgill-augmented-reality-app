@@ -33,17 +33,22 @@ export default function UserImage(props) {
             fetchWrapper(
                 `${BACKEND}/image/profile`,
                 { "Content-Type": "multipart/form-data" },
-                "POST",
+                "PUT",
                 imageData
             ).then((res) => {
-                if (res.ok) {
-                    console.log("Profile picture uploaded.");
-                    props.setProfilePicture({
-                        uri: upload.uri,
-                        name: fileName,
-                    });
+                if(res) {
+                    if (res.ok) {
+                        console.log("Profile picture uploaded.");
+                        props.setProfilePicture({
+                            uri: upload.uri,
+                            name: fileName,
+                        });
+                    } else {
+                        console.log("Failed to upload profile picture.");
+                    }
                 } else {
-                    console.log("Failed to upload profile picture.");
+                    // assume image too large
+                    props.imageSizeAlertHandler()
                 }
             });
         }
