@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class ImageDataController {
 
     private ImageDataService imageDataService;
 
-    @PostMapping("schedule")
+    @PutMapping("schedule")
     public ResponseEntity<?> uploadScheduleImage(@RequestParam("image") MultipartFile file) throws IOException {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -28,7 +29,7 @@ public class ImageDataController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("profile")
+    @PutMapping("profile")
     public ResponseEntity<?> uploadProfileImage(@RequestParam("image") MultipartFile file) throws IOException {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -40,40 +41,53 @@ public class ImageDataController {
     @GetMapping("info/schedule")
     public ResponseEntity<?>  getScheduleImageInfoByName(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        ImageData image = imageDataService.getInfoByImageByName("schedule_" + name);
+        Optional<ImageData> image = imageDataService.getInfoByImageByName("schedule_" + name);
+        return image.map(imageData -> ResponseEntity.status(HttpStatus.OK)
+                .body(imageData)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(image);
     }
 
     @GetMapping("info/profile")
     public ResponseEntity<?>  getProfileImageInfoByName(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        ImageData image = imageDataService.getInfoByImageByName("profile_" + name);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(image);
+        Optional<ImageData> image = imageDataService.getInfoByImageByName("profile_" + name);
+        return image.map(imageData -> ResponseEntity.status(HttpStatus.OK)
+                .body(imageData)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("schedule")
     public ResponseEntity<?>  getScheduleImageByName(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        byte[] image = imageDataService.getImage("schedule_" + name);
+        Optional<byte[]> image = imageDataService.getImage("schedule_" + name);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return image.map(bytes -> ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
-                .body(image);
+                .body(bytes)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("profile")
     public ResponseEntity<?>  getProfileImageByName(){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        byte[] image = imageDataService.getImage("profile_" + name);
+        Optional<byte[]> image = imageDataService.getImage("profile_" + name);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return image.map(bytes -> ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
-                .body(image);
+                .body(bytes)).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
+
     }
 
+    @DeleteMapping("schedule")
+    public ResponseEntity<?> deleteScheduleImageByName() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        imageDataService.deleteImage("schedule_" + name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("profile")
+    public ResponseEntity<?> deleteProfileImageByName() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        imageDataService.deleteImage("profile_" + name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

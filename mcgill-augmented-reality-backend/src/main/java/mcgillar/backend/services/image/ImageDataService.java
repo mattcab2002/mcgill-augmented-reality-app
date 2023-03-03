@@ -26,22 +26,30 @@ public class ImageDataService {
     }
 
     @Transactional
-    public ImageData getInfoByImageByName(String name) {
+    public Optional<ImageData> getInfoByImageByName(String name) {
         Optional<ImageData> dbImage = imageDataRepository.findByName(name);
 
-        return ImageData.builder()
-                .name(dbImage.get().getName())
-                .type(dbImage.get().getType())
-                .imageData(ImageUtil.decompressImage(dbImage.get().getImageData())).build();
+        return dbImage.map(imageData -> ImageData.builder()
+                .name(imageData.getName())
+                .type(imageData.getType())
+                .imageData(ImageUtil.decompressImage(imageData.getImageData())).build());
 
     }
 
     @Transactional
-    public byte[] getImage(String name) {
+    public Optional<byte[]> getImage(String name) {
         Optional<ImageData> dbImage = imageDataRepository.findByName(name);
-        byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
-        return image;
+        if (dbImage.isPresent()) {
+            byte[] image = ImageUtil.decompressImage(dbImage.get().getImageData());
+            return Optional.of(image);
+        }
+        return Optional.empty();
     }
 
+    @Transactional
+    public void deleteImage(String name) {
+        Optional<ImageData> dbImage = imageDataRepository.findByName(name);
+        dbImage.ifPresent(imageData -> imageDataRepository.delete(imageData));
+    }
 
 }
