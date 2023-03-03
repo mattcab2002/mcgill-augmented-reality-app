@@ -1070,7 +1070,7 @@
 			"name": "Image Data Controller",
 			"item": [
 				{
-					"name": "Upload image",
+					"name": "Upload Schedule image",
 					"event": [
 						{
 							"listen": "test",
@@ -1083,7 +1083,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "formdata",
@@ -1091,55 +1091,167 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/home/seb/Downloads/dino.png"
+									"src": "/home/seb/Downloads/shark.png"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{backend}}/image/",
+							"raw": "{{backend}}/image/schedule",
 							"host": [
 								"{{backend}}"
 							],
 							"path": [
 								"image",
-								""
+								"schedule"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Image data",
+					"name": "Upload Profile image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/seb/Downloads/pug-low-quality.gif"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{backend}}/image/profile",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"image",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Schedule Image data",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{backend}}/image/info/",
+							"raw": "{{backend}}/image/info/schedule",
 							"host": [
 								"{{backend}}"
 							],
 							"path": [
 								"image",
 								"info",
-								""
+								"schedule"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Image",
+					"name": "Get Profile Image data",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{backend}}/image/",
+							"raw": "{{backend}}/image/info/profile",
 							"host": [
 								"{{backend}}"
 							],
 							"path": [
 								"image",
-								""
+								"info",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Schedule Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/image/schedule",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"image",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/image/profile",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"image",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Schedule Image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/image/schedule",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"image",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Profile Image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/image/profile",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"image",
+								"profile"
 							]
 						}
 					},
