@@ -10,7 +10,7 @@ import mcgillar.backend.model.user.FriendRequest;
 public interface FriendRequestRepository extends CrudRepository<FriendRequest, Integer> {
     ArrayList<FriendRequest> findFriendRequestBySender(AppUser sender);
     
-    ArrayList<FriendRequest> findFriendRequestByReceiver(AppUser reciever);
+    ArrayList<FriendRequest> findFriendRequestByReciever(AppUser reciever);
 
     FriendRequest findFriendRequestBySenderAndReciever(AppUser sender, AppUser reciever);
 }

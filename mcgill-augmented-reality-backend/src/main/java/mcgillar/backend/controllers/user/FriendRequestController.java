@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import mcgillar.backend.TO.user.FriendRequestTO;
 import mcgillar.backend.services.user.FriendRequestService;
 
 @AllArgsConstructor
@@ -29,13 +30,13 @@ public class FriendRequestController {
      * Send a friend request to the given user
      */
     @PostMapping("send") 
-    public ResponseEntity<String> createFriendRequest(
+    public ResponseEntity<FriendRequestTO> createFriendRequest(
         @RequestParam String reciever,
         Authentication authentication) {
         
         String sender = authentication.getName();
-        friendRequestService.createFriendRequest(sender, reciever);
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
+        FriendRequestTO friendRequest = friendRequestService.createFriendRequest(sender, reciever);
+        return new ResponseEntity<FriendRequestTO>(friendRequest, HttpStatus.OK);
     }
 
     /**
@@ -47,22 +48,48 @@ public class FriendRequestController {
      * Accept a friend request from the given user
      */
     @PutMapping("decline")
-    public ResponseEntity<String> declineFriendRequest(
+    public ResponseEntity<FriendRequestTO> declineFriendRequest(
         @RequestParam String sender,
         Authentication authentication) {
         
         String reciever = authentication.getName();
-        friendRequestService.declineFriendRequest(sender, reciever);
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
+        FriendRequestTO friendRequest = friendRequestService.declineFriendRequest(sender, reciever);
+        return new ResponseEntity<FriendRequestTO>(friendRequest, HttpStatus.OK);
     }
 
+    /**
+     * 
+     * @param sender
+     * @param authentication
+     * @return
+     * 
+     * Decline a friend request from the given user
+     */
     @PutMapping("accept")
-    public ResponseEntity<String> acceptFriendRequest(
+    public ResponseEntity<FriendRequestTO> acceptFriendRequest(
         @RequestParam String sender,
         Authentication authentication) {
         
         String reciever = authentication.getName();
-        friendRequestService.acceptFriendRequest(sender, reciever);
+        FriendRequestTO friendRequest = friendRequestService.acceptFriendRequest(sender, reciever);
+        return new ResponseEntity<FriendRequestTO>(friendRequest, HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @param reciever
+     * @param authentication
+     * @return
+     * 
+     * Revoke a friend request to the given user
+     */
+    @DeleteMapping("revoke")
+    public ResponseEntity<String> revokeFriendRequest(
+        @RequestParam String reciever,
+        Authentication authentication) {
+        
+        String sender = authentication.getName();
+        friendRequestService.revokeFriendRequest(sender, reciever);
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 }
