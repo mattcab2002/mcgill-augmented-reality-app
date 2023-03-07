@@ -9,6 +9,11 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+package-lock.json
+.env
 
 # macOS
 .DS_Store
+
+package-lock.json
+.prettierrc.js
