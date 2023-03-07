@@ -1,9 +1,12 @@
 package mcgillar.backend.controllers.user;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,5 +94,33 @@ public class FriendRequestController {
         String sender = authentication.getName();
         friendRequestService.revokeFriendRequest(sender, reciever);
         return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @param authentication
+     * @return
+     * 
+     * Get all friend requests sent to the current user
+     */
+    @GetMapping("get-all-sent")
+    public ResponseEntity<List<FriendRequestTO>> getAllSentFriendRequests(Authentication authentication) {
+        String sender = authentication.getName();
+        List<FriendRequestTO> friendRequests = friendRequestService.getAllSentFriendRequests(sender);
+        return new ResponseEntity<List<FriendRequestTO>>(friendRequests, HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @param authentication
+     * @return
+     * 
+     * Get all friend requests recieved by the current user
+     */
+    @GetMapping("get-all-recieved")
+    public ResponseEntity<List<FriendRequestTO>> getAllRecievedFriendRequest(Authentication authentication) {
+        String reciever = authentication.getName();
+        List<FriendRequestTO> friendRequests = friendRequestService.getAllRecievedFriendRequests(reciever);
+        return new ResponseEntity<List<FriendRequestTO>>(friendRequests, HttpStatus.OK);
     }
 }

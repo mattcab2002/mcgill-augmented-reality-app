@@ -1,7 +1,10 @@
 package mcgillar.backend.services.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -124,5 +127,51 @@ public class FriendRequestService {
         // Get the friend request and remove from database
         FriendRequest friendRequest = friendRequestRepository.findFriendRequestBySenderAndReciever(senderUser, recieverUser);
         friendRequestRepository.delete(friendRequest);
+    }
+
+    /**
+     * 
+     * @param sender
+     * @return List<FriendRequestTO>
+     * 
+     * Gets all friend requests sent by sender
+     */
+    public List<FriendRequestTO> getAllSentFriendRequests(String sender) {
+        // Get the sender user
+        AppUser senderUser = appUserRepository.findAppUserByUsername(sender);
+
+        // Get all friend requests sent by the sender
+        List<FriendRequest> friendRequests = friendRequestRepository.findFriendRequestBySender(senderUser);
+
+        // Convert to FriendRequestTO
+        List<FriendRequestTO> friendRequestTOs = new ArrayList<FriendRequestTO>();
+        for (FriendRequest friendRequest : friendRequests) {
+            friendRequestTOs.add(new FriendRequestTO(friendRequest));
+        }
+
+        return friendRequestTOs;
+    }
+
+    /**
+     * 
+     * @param reciever
+     * @return List<FriendRequestTO>
+     * 
+     * Gets all friend requests sent to reciever
+     */
+    public List<FriendRequestTO> getAllRecievedFriendRequests(String reciever) {
+        // Get the reciever user
+        AppUser recieverUser = appUserRepository.findAppUserByUsername(reciever);
+
+        // Get all friend requests sent to the reciever
+        List<FriendRequest> friendRequests = friendRequestRepository.findFriendRequestByReciever(recieverUser);
+
+        // Convert to FriendRequestTO
+        List<FriendRequestTO> friendRequestTOs = new ArrayList<FriendRequestTO>();
+        for (FriendRequest friendRequest : friendRequests) {
+            friendRequestTOs.add(new FriendRequestTO(friendRequest));
+        }
+
+        return friendRequestTOs;
     }
 }
