@@ -40,6 +40,10 @@ public class FriendRequestService {
         AppUser senderUser = appUserRepository.findAppUserByUsername(sender);
         AppUser recieverUser = appUserRepository.findAppUserByUsername(reciever);
 
+        if (friendRequestRepository.findFriendRequestBySenderAndReciever(senderUser, recieverUser) != null) {
+            return null;
+        }
+        
         // Set the sender and reciever users
         friendRequest.setSender(senderUser);
         friendRequest.setReciever(recieverUser);
