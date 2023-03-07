@@ -25,5 +25,9 @@ public class BuildingService {
         return buildingRepository.findAll();
     }
 
+    public Building findBuildingByShortCode(String shortCode) {
+        return buildingRepository.findBuildingByShortCode(shortCode);
+    }
+
 
 }
