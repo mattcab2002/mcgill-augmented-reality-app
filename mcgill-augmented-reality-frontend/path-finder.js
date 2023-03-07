@@ -28,7 +28,7 @@ export function getPath(origin, destination) {
                 for(let j = 0; j < numberOfNodes; j++){
                     const node = google.maps.geometry.spherical.interpolate(step.starting_location, step.end_location, distanceCoveredInFraction);
                     nodes.push(node);
-                    distanceCoveredInFraction = (distanceCoveredInFraction+0.7)/step.distance.value; 
+                    distanceCoveredInFraction += 0.7/step.distance.value; 
                 }
                 if(flag && i === numberOfSteps-1) nodes.push(step.end_location);       
             }
