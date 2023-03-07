@@ -157,7 +157,7 @@ public class FriendRequestService {
      * @param reciever
      * @return List<FriendRequestTO>
      * 
-     * Gets all friend requests sent to reciever
+     * Gets all friend requests recieved by reciever
      */
     public List<FriendRequestTO> getAllRecievedFriendRequests(String reciever) {
         // Get the reciever user
