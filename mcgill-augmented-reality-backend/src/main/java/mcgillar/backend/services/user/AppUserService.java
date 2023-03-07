@@ -2,6 +2,9 @@ package mcgillar.backend.services.user;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,11 +52,32 @@ public class AppUserService implements UserDetailsService {
      * @return new AppUser with MEMBER authority
      */
     public AppUser createUser(String username, String password) {
+        
+        if (username == null || username.isEmpty()) throw new IllegalArgumentException("Username can't be empty");
+        if (password == null || password.isEmpty()) throw new IllegalArgumentException("Password can't be empty");
+        if (password.length() < 8) throw new IllegalArgumentException("Password needs to be at least 8 characters");
+        
+        if (getUserByUsername(username) != null) throw new IllegalArgumentException("This email already exists");
+        
+        boolean isValid = checkPassword(password);
+        if (!isValid) throw new IllegalArgumentException("Password is invalid");
+        
         AppUser newUser = new AppUser();
         newUser.setUsername(username);
         newUser.getAuthorities().add(AppUserAuthority.MEMBER);
         newUser.setPasswordHash(passwordEncoder.encode(password));
         return appUserRepository.save(newUser);
+    }
+
+    private boolean checkPassword(String password) throws IllegalArgumentException {
+        Pattern capitalLetter = Pattern.compile("[A-Z]");
+        Pattern digit = Pattern.compile("[0-9]");
+        Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        Matcher hasCapitalLetter = capitalLetter.matcher(password);
+        Matcher hasDigit = digit.matcher(password);
+        Matcher hasSpecial = special.matcher(password);
+        return hasCapitalLetter.find() && hasDigit.find() && hasSpecial.find();
+        
     }
 
 

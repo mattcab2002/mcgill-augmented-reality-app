@@ -28,7 +28,7 @@ public class LoginTest {
     @Test
     public void loginSuccess() {
         String username = "test_name";
-        String pass = "test_password";
+        String pass = "Password123!";
         appUserService.createUser(username, pass);
 
         ResponseEntity<String> response = getResponse(username, pass);
