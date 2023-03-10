@@ -2,13 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
 import getPath from './path-finder';
+import { useEffect } from 'react';
 
 export default function App() {
 
-  getPath(null, null);
+  useEffect(() => {
+    getPath('45.471165, -73.650087', '45.471249, -73.648020').then(data => console.log(data));
+  }, [])
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>hey!</Text>
       <StatusBar style="auto" />
     </View>
   );
