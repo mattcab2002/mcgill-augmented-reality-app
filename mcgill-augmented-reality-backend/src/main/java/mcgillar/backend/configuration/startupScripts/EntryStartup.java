@@ -27,24 +27,6 @@ public class EntryStartup {
 		appUserInfoService.addOrModifyEmail("dev.user@mail.mcgill.ca", "dev_user");
 		appUserInfoService.addOrModifyFirstAndLastName("Dev", "User", "dev_user");
 		appUserInfoService.addOrModifyStudentNumber((long) 123456789, "dev_user");
-		
-        appUserService.createUser("user1", "password1");
-        appUserInfoService.addOrModifyCountryCodeAndPhoneNumber(1, "5147437102", "user1");
-		appUserInfoService.addOrModifyEmail("user1.user@mail.mcgill.ca", "user1");
-		appUserInfoService.addOrModifyFirstAndLastName("Dev1", "User1", "user1");
-		appUserInfoService.addOrModifyStudentNumber((long) 123456781, "user1");
-
-        appUserService.createUser("user2", "password2");
-        appUserInfoService.addOrModifyCountryCodeAndPhoneNumber(1, "5147437103", "user2");
-		appUserInfoService.addOrModifyEmail("user2.user@mail.mcgill.ca", "user2");
-		appUserInfoService.addOrModifyFirstAndLastName("Dev2", "User2", "user2");
-		appUserInfoService.addOrModifyStudentNumber((long) 123456782, "user2");
-		
-        appUserService.createUser("user3", "password3");
-        appUserInfoService.addOrModifyCountryCodeAndPhoneNumber(1, "5147437104", "user3");
-		appUserInfoService.addOrModifyEmail("user3.user@mail.mcgill.ca", "user3");
-		appUserInfoService.addOrModifyFirstAndLastName("Dev3", "User3", "user3");
-		appUserInfoService.addOrModifyStudentNumber((long) 123456783, "user3");
         setUpBuildings();
     }
 
