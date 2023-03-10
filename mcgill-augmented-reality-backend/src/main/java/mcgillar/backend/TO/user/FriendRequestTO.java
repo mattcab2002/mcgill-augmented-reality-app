@@ -9,21 +9,21 @@ import mcgillar.backend.model.user.FriendRequestStatus;
 @Data
 public class FriendRequestTO {
 
-    private AppUser sender;
+    private ValidatedUser sender;
 
-    private AppUser reciever;
+    private ValidatedUser reciever;
 
     private FriendRequestStatus status;
 
     public FriendRequestTO(AppUser sender, AppUser reciever, FriendRequestStatus status) {
-        this.sender = sender;
-        this.reciever = reciever;
+        this.sender = ValidatedUser.getInstance(sender);
+        this.reciever = ValidatedUser.getInstance(reciever);
         this.status = status;
     }
 
     public FriendRequestTO(FriendRequest friendRequest) {
-        this.sender = friendRequest.getSender();
-        this.reciever = friendRequest.getReciever();
+        this.sender = ValidatedUser.getInstance(friendRequest.getSender());
+        this.reciever = ValidatedUser.getInstance(friendRequest.getReciever());
         this.status = friendRequest.getStatus();
     }
 
