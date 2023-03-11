@@ -38,10 +38,6 @@ public class TestUserServiceSignUp {
     private static final String USERNAME_KEY = "tester";
     private static final String PASSWORD = "Password123!";
 
-//    private String EMPLOYEE_USERNAME = "TEST_USERNAME";
-//    private String EMPLOYEE_EMAIL = "TEST_EMAIL@mail.ca";
-//    private String EMPLOYEE_PASSWORD = "TEST_PASSWORD";
-//    private String EMPLOYEE_ADDRESS = "TEST_ADDRESS";
     @BeforeEach
     public void setMockOutput() {
         lenient().when(passwordEncoder.encode(PASSWORD)).thenReturn("hashedPassword");
