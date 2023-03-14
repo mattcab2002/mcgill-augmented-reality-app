@@ -1,4 +1,4 @@
-package mcgillar.backend.services;
+package mcgillar.backend.services.auth;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -40,7 +40,7 @@ public class TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(2, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(60, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();

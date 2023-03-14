@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mcgillar.backend.services.TokenService;
+import mcgillar.backend.services.auth.TokenService;
 
 @RestController
 public class TokenController {

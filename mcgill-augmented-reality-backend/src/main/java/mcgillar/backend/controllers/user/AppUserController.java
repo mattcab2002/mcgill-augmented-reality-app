@@ -2,7 +2,9 @@ package mcgillar.backend.controllers.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import mcgillar.backend.TO.user.ValidatedUser;
 import mcgillar.backend.model.user.AppUser;
-import mcgillar.backend.services.AppUserService;
+import mcgillar.backend.services.user.AppUserService;
+
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("/user/")
@@ -20,6 +24,7 @@ import mcgillar.backend.services.AppUserService;
 public class AppUserController {
     
     private AppUserService appUserService;
+    private static final Gson gson = new Gson();
 
     @PostMapping("register")
     public ResponseEntity<ValidatedUser> registerUser(@RequestParam String username, @RequestParam String password) {
@@ -65,6 +70,22 @@ public class AppUserController {
         if (user == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<ValidatedUser>(user, HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * 
+     * @param authentication
+     * @return deleted user
+     * 
+     * !! Danger !!
+     */
+    @DeleteMapping("delete-account")
+    public ResponseEntity<String> deleteAccount(
+        Authentication authentication
+    ) {
+        String username = authentication.getName();
+        appUserService.deleteAccount(username);
+        return new ResponseEntity<String>(gson.toJson("OK"), HttpStatus.OK);
     }
 
 }

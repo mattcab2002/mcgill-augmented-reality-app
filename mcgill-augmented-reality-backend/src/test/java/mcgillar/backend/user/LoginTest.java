@@ -14,7 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import mcgillar.backend.services.AppUserService;
+import mcgillar.backend.services.user.AppUserService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class LoginTest {
