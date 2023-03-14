@@ -44,7 +44,7 @@ export default function Map() {
     };
 
     useEffect(() => {
-        fetchWrapper(`${BACKEND}/building/get-all-mcgill-buildings`).then(
+        fetchWrapper(`${BACKEND}/building/get-all-mcgill-buildings`, {"Content-Type": "application/json"}).then(
             (locations) => {
                 setLocations(locations);
             }
