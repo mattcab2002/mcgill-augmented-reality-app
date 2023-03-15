@@ -54,8 +54,8 @@ public class ImageDataController {
             String name = SecurityContextHolder.getContext().getAuthentication().getName();
             imageDataService.uploadImage(file, "schedule_" + name);
         } catch(IOException error) {
-            System.err.println(error.getMessage());
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            System.err.println("Upload Schedule Failed: " + error.getMessage());
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity(HttpStatus.OK);
