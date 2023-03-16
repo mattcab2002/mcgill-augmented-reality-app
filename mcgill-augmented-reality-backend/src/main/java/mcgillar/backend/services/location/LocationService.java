@@ -3,6 +3,7 @@ package mcgillar.backend.services.location;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import mcgillar.backend.TO.location.LocationTO;
 import mcgillar.backend.model.location.Location;
 import mcgillar.backend.repositories.location.LocationRepository;
 
@@ -17,5 +18,17 @@ public class LocationService {
         Location location = new Location(postalCode, address, latitude, longitude, altitude);
         return locationRepository.save(location);
     }
+
+    public Location createLocation(LocationTO locationTO) {
+        return createLocation(
+            locationTO.getPostalCode(), 
+            locationTO.getAddress(), 
+            locationTO.getLatitude(), 
+            locationTO.getLongitude(),
+            locationTO.getAltitude()
+        );
+    }
+
+
 
 }
