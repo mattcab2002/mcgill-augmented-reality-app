@@ -2,6 +2,7 @@ package mcgillar.backend.controllers.location;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,16 @@ public class RouteController {
  
     @GetMapping
     public ResponseEntity<?> getRouteById(@RequestParam Integer Id, Authentication authentication) {
-        return null;
+        try {
+            Route route = routeService.getRouteById(authentication, Id);
+            return new ResponseEntity<RouteResponseTO>(RouteResponseTO.from(route), HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch (BadCredentialsException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping
@@ -38,7 +48,7 @@ public class RouteController {
             RouteResponseTO to = RouteResponseTO.from(route);
             return new ResponseEntity<RouteResponseTO>(to, HttpStatus.CREATED);
         }catch(Exception e) {
-            return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }   
+    } 
 }

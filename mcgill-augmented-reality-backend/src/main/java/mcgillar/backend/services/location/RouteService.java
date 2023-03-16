@@ -1,5 +1,7 @@
 package mcgillar.backend.services.location;
 
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -27,5 +29,13 @@ public class RouteService {
         newRoute.setEndLocation(end);
         newRoute.setUser(user);
         return routeRepository.save(newRoute);
+    }
+
+    public Route getRouteById(Authentication authentication, Integer Id) {
+        AppUser user = appUserService.getUserByUsername(authentication.getName());
+        Route route = routeRepository.findRouteById(Id);
+        if (route == null) throw new IllegalArgumentException("Route not Found");
+        if (route.getUser().getId() != user.getId()) throw new BadCredentialsException("Forbidden to view this ressource");
+        return route;
     }
 }
