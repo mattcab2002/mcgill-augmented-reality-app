@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import mcgillar.backend.TO.location.EventTO;
 import mcgillar.backend.TO.location.LocationTO;
 import mcgillar.backend.model.location.Event;
 import mcgillar.backend.model.location.Location;
@@ -19,14 +20,14 @@ public class EventService {
     private EventRepository eventRepository;
     private AppUserService appUserService;
 
-    public Event createEvent(String organizerName, LocationTO location, Date date, String eventName) {
-        AppUser organizer = appUserService.getUserByUsername(organizerName);
-
+    public Event createEvent(String organizerName, EventTO eventTO) {
         Event event = new Event();
+
+        AppUser organizer = appUserService.getUserByUsername(eventTO.organizer.username);
         event.setOrganizer(organizer);
-        event.setDate(date);
-        event.setLocation(convertLocationTO(location));
-        event.setName(eventName);
+        event.setDate(eventTO.date);
+        event.setLocation(eventTO.location);
+        event.setName(eventTO.name);
 
         return eventRepository.save(event);
     }
@@ -35,16 +36,5 @@ public class EventService {
         Event event = eventRepository.findEventById(id);
         if (event == null) throw new IllegalArgumentException("Route not Found");
         return event;
-    }
-
-    private Location convertLocationTO(LocationTO locationTO) {
-        Location location = new Location();
-        location.setPostalCode(locationTO.postalCode);
-        location.setAddress(locationTO.address);
-        location.setLatitude(locationTO.latitude);
-        location.setLongitude(locationTO.longitude);
-        location.setAltitude(locationTO.altitude);
-    
-        return location;
     }
 }

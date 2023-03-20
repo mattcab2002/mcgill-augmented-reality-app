@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import mcgillar.backend.TO.location.EventTO;
-import mcgillar.backend.TO.location.LocationTO;
 import mcgillar.backend.model.location.Event;
 import mcgillar.backend.services.location.EventService;
 
@@ -28,9 +27,12 @@ public class EventController {
     private EventService eventService;
 
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody LocationTO location, Authentication authentication, @DateTimeFormat(pattern = "dd.MM.yyyy") Date date, @RequestParam String eventName) {
+    public ResponseEntity<?> createEvent(
+        Authentication authentication,
+        @RequestBody EventTO eventTO
+    ) {
         try {
-            Event event = eventService.createEvent(authentication.getName(), location, date, eventName);
+            Event event = eventService.createEvent(authentication.getName(), eventTO);
             return new ResponseEntity<EventTO>(EventTO.convert(event), HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
