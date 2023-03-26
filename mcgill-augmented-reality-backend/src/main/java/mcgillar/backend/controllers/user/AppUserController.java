@@ -25,12 +25,10 @@ public class AppUserController {
 
     @PostMapping("register")
     public ResponseEntity<ValidatedUser> registerUser(@RequestParam String username, @RequestParam String password) {
-        if (username.length() > 0 && password.length() > 0) {
-            AppUser user = appUserService.createUser(username, password);
-            if (user != null) {
-                ValidatedUser validatedUser = new ValidatedUser(user);
-                return new ResponseEntity<ValidatedUser>(validatedUser, HttpStatus.CREATED);
-            }
+        AppUser user = appUserService.createUser(username, password);
+        if (user != null) {
+            ValidatedUser validatedUser = new ValidatedUser(user);
+            return new ResponseEntity<ValidatedUser>(validatedUser, HttpStatus.CREATED);
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

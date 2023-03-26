@@ -31,4 +31,7 @@ public class Course {
     private WeeklySchedule weeklySchedule;
 
     private Set<Date> times = new HashSet<Date>();
+
+    // Measured in minutes
+    private Double duration;
 }
