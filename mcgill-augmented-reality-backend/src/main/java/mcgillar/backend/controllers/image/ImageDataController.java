@@ -9,13 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.bytedeco.leptonica.global.lept;
-import org.bytedeco.leptonica.PIX;
-import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.tesseract.*;
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
+import net.sourceforge.tess4j.*;
 
 @RestController
 @AllArgsConstructor
@@ -26,36 +25,32 @@ public class ImageDataController {
 
     @PutMapping("schedule")
     public ResponseEntity<?> uploadScheduleImage(@RequestParam("image") MultipartFile file) throws IOException {
-        try (TessBaseAPI api = new TessBaseAPI()){
-            // Convert MultipartFile to byte array
-            byte[] fileBytes = file.getBytes();
+        try {
 
-            // Create PIX object from byte array
-            PIX image = lept.pixReadMem(fileBytes, fileBytes.length);
+            // Convert MultipartFile to File
+            File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+            convertedFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convertedFile);
+            fos.write(file.getBytes());
+            fos.close();
 
-            // OCR using Tesseract
-            BytePointer outText;
+            // Initialize Tesseract instance
+            Tesseract tesseract = new Tesseract();
+            tesseract.setOcrEngineMode(1); // Set OCR engine mode to Tesseract only (LSTM engine)
+            tesseract.setPageSegMode(1); // Set page segmentation mode to fully automatic layout analysis
+            tesseract.setDatapath("/Users/abhijeetpraveen/mcgill-augmented-reality-app/mcgill-augmented-reality-backend/Tess4J/tessdata"); // Set path to tessdata directory
+            tesseract.setLanguage("eng"); // Set language to English
 
-            if (api.Init(null, "eng") != 0) {
-                System.err.println("Could not initialize tesseract.");
-                System.exit(1);
-            }
-
-            api.SetImage(image);
-            outText = api.GetUTF8Text();
-
-            // Print OCR result to console
-            System.out.println("OCR output:\n" + outText.getString());
-
-            api.End();
-            outText.deallocate();
-            lept.pixDestroy(image);
+            // Perform OCR on the file
+            String result = tesseract.doOCR(convertedFile);
+            System.out.println("OCR Text Output: " + result);
 
             String name = SecurityContextHolder.getContext().getAuthentication().getName();
             imageDataService.uploadImage(file, "schedule_" + name);
-        } catch(IOException error) {
+
+        } catch(TesseractException error) {
             System.err.println("Upload Schedule Failed: " + error.getMessage());
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity("Upload Schedule Failed: " + error.getMessage(), HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity(HttpStatus.OK);
