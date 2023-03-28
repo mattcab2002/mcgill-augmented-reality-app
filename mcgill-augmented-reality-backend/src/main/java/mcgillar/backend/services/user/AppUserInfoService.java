@@ -17,7 +17,7 @@ public class AppUserInfoService {
 
     /**
      * 
-     * @param user to find or create AppUserInfo by
+     * @param username to find or create AppUserInfo by
      * @return new or existing AppUserInfo
      * 
      * to avoid conflicts when searching for non existing AppUserInfo
@@ -44,7 +44,9 @@ public class AppUserInfoService {
     public AppUserInfo addOrModifyFirstAndLastName(String firstName, String lastName, String username) {
         AppUserInfo info = createOrReturnExistingInfoByUser(username);
         if (firstName != null && firstName.length() > 0) info.setFirstName(firstName);
+        else throw new IllegalArgumentException("Please enter a first name");
         if (lastName != null && lastName.length() > 0) info.setLastName(lastName);
+        else throw new IllegalArgumentException("Please enter a last name");
         return appUserInfoRepository.save(info);   
     }
 
@@ -60,7 +62,9 @@ public class AppUserInfoService {
     public AppUserInfo addOrModifyCountryCodeAndPhoneNumber(Integer countryCode, String phoneNumber, String username) {
         AppUserInfo info = createOrReturnExistingInfoByUser(username);
         if (countryCode != null) info.setCountryCode(countryCode);
+        else throw new IllegalArgumentException("Please enter your Country Code");
         if (phoneNumber != null && phoneNumber.length() > 0) info.setPhoneNumber(phoneNumber);
+        else throw new IllegalArgumentException("Please enter your Phone number");
         return appUserInfoRepository.save(info);
     }
 
@@ -75,6 +79,12 @@ public class AppUserInfoService {
     public AppUserInfo addOrModifyEmail(String email, String username) {
         AppUserInfo info = createOrReturnExistingInfoByUser(username);
         if (email != null && email.length() > 0) info.setEmail(email);
+        else throw new IllegalArgumentException("Please enter your email.");
+        if(email.equals(" ")) throw new IllegalArgumentException("Email can't be empty");
+        if (email.indexOf("@") <= 0 || email.indexOf("@") != email.lastIndexOf("@") ||
+                email.indexOf("@") >= email.lastIndexOf(".") - 1 ||
+                email.lastIndexOf(".") >= email.length() - 1)
+            throw new IllegalArgumentException("Invalid email format");
         return appUserInfoRepository.save(info);
     }
 
@@ -89,6 +99,7 @@ public class AppUserInfoService {
     public AppUserInfo addOrModifyStudentNumber(Long studentNumber, String username) {
         AppUserInfo info = createOrReturnExistingInfoByUser(username);
         if (studentNumber != null) info.setStudentNumber(studentNumber);
+        else throw new IllegalArgumentException("Please enter your Student ID");
         return appUserInfoRepository.save(info);
     }
 
