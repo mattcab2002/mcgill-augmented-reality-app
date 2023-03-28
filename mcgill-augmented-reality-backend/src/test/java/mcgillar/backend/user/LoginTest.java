@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import mcgillar.backend.services.user.AppUserService;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class LoginTest {
     
     @Autowired
