@@ -151,7 +151,7 @@ public class TestUserInfoService {
             error = e.getMessage();
         }
         assertNotNull(error);
-        assertEquals("Please enter a first and last name", error);
+        assertEquals("Please enter a first name", error);
     }
     @Test
     public void testAddOrModifyBothNamesEmpty() {
@@ -166,7 +166,7 @@ public class TestUserInfoService {
             error = e.getMessage();
         }
         assertNotNull(error);
-        assertEquals("Please enter a first and last name", error);
+        assertEquals("Please enter a first name", error);
     }
     @Test
     public void testAddOrModifyStudentNumber() {
@@ -270,7 +270,7 @@ public class TestUserInfoService {
             error = e.getMessage();
         }
         assertNotNull(error);
-        assertEquals("Email can't be empty.", error);
+        assertEquals("Please enter your email.", error);
     }
     @Test
     public void testUAddOrModifyEmptyEmail(){
@@ -284,7 +284,7 @@ public class TestUserInfoService {
             error = e.getMessage();
         }
         assertNotNull(error);
-        assertEquals("Email can't be empty.", error);
+        assertEquals("Please enter your email.", error);
     }
     @Test
     public void testAddOrModifyEmptySpaceEmail(){
@@ -298,7 +298,7 @@ public class TestUserInfoService {
             error = e.getMessage();
         }
         assertNotNull(error);
-        assertEquals("Email can't be empty.", error);
+        assertEquals("Email can't be empty", error);
     }
     @Test
     public void testAddOrModifyEmailAtSymbolFirst(){
