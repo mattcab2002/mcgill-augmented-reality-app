@@ -22,8 +22,8 @@ public class EntryStartup {
 	private AppUserInfoService appUserInfoService;
 
     public void startup() {
-        appUserService.createUser("dev_user", "dev_pword");
         appUserService.createUser("AR_CLIENT_ID", "AR_CLIENT_SECRET");
+        appUserService.createUser("dev_user", "Password123!");
         appUserInfoService.addOrModifyCountryCodeAndPhoneNumber(1, "5147437101", "dev_user");
 		appUserInfoService.addOrModifyEmail("dev.user@mail.mcgill.ca", "dev_user");
 		appUserInfoService.addOrModifyFirstAndLastName("Dev", "User", "dev_user");

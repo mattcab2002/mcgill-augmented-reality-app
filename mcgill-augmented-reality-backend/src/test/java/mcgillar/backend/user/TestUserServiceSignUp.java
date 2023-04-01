@@ -23,8 +23,6 @@ import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-
 
 @ExtendWith(MockitoExtension.class)
 public class TestUserServiceSignUp {
@@ -38,10 +36,6 @@ public class TestUserServiceSignUp {
     private static final String USERNAME_KEY = "tester";
     private static final String PASSWORD = "Password123!";
 
-//    private String EMPLOYEE_USERNAME = "TEST_USERNAME";
-//    private String EMPLOYEE_EMAIL = "TEST_EMAIL@mail.ca";
-//    private String EMPLOYEE_PASSWORD = "TEST_PASSWORD";
-//    private String EMPLOYEE_ADDRESS = "TEST_ADDRESS";
     @BeforeEach
     public void setMockOutput() {
         lenient().when(passwordEncoder.encode(PASSWORD)).thenReturn("hashedPassword");
@@ -141,7 +135,7 @@ public class TestUserServiceSignUp {
         }
         assertNull(user);
         // check error
-        assertEquals("Password needs a capital letter", error);
+        assertEquals("Password is invalid", error);
     }
     @Test
     public void testCreateUserPasswordShortLength() {
@@ -171,7 +165,7 @@ public class TestUserServiceSignUp {
         }
         assertNull(user);
         // check error
-        assertEquals("Password needs a number", error);
+        assertEquals("Password is invalid", error);
     }
     @Test
     public void testCreateUserPasswordWithoutSpecialCharac() {
@@ -186,7 +180,7 @@ public class TestUserServiceSignUp {
         }
         assertNull(user);
         // check error
-        assertEquals("Password needs a special character", error);
+        assertEquals("Password is invalid", error);
     }
 
     @Test
@@ -197,19 +191,18 @@ public class TestUserServiceSignUp {
         AppUser user2 = null;
         String error = null;
 
-        ArrayList<AppUser> ls = new ArrayList<>();
-        when(appUserRepository.findAll()).thenReturn(ls);
-
+        when(appUserRepository.findAppUserByUsername(name)).thenReturn(null);
+        
         try {
             user1 = appUserService.createUser(name, PASSWORD);
-            ls.add(user1);
+            when(appUserRepository.findAppUserByUsername(name)).thenReturn(user1);
             user2 = appUserService.createUser(name, PASSWORD);
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
         assertNotNull(user1);
         assertNull(user2);
-        assertEquals("An identical customer already exists.", error);
+        assertEquals("This email already exists", error);
     }
 
 }
