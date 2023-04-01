@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import getPath from './path-finder';
 
 function App() {
 
@@ -10,7 +11,10 @@ function App() {
   useEffect(() => {
     fetch("https://localhost:8080/routes/" + searchParams.get("routeId"))
       .then((response) => response.json())
-      .then((data) => setDots(data));
+      .then((data) => {
+        setDots(getPath(data.startLocation.latitude.toString() + "," + data.startLocation.longitude.toString(), data.endLocation.latitude.toString() + "," + data.endLocation.longitude.toString()));
+
+      });
     
     fetch("https://localhost:8080/events/")
       .then((response) => response.json())
@@ -37,7 +41,7 @@ function App() {
         animation-mixer="loop: repeat"
         gltf-model="#animated-asset"
         scale="0.30000000000000016 0.30000000000000016 0.30000000000000016"
-        gps-entity-place={"latitude:" + dot.latitude + ";"+ "latitude:"+ dot.latitude +";"}
+          gps-entity-place={"latitude:" + dot.split(",")[0] + ";" + "latitude:" + dot.split(",")[1] +";"}
       ></a-entity> ) }
       {events.map((event) =>(
         <a-entity
@@ -45,7 +49,7 @@ function App() {
           animation-mixer="loop: repeat"
           text={"value:"+event.name+";"}
           scale="0.30000000000000016 0.30000000000000016 0.30000000000000016"
-          gps-entity-place={"latitude:" + dot.latitude + ";"+ "latitude:"+ dot.latitude +";"}
+          gps-entity-place={"latitude:" + event.location.latitude + ";"+ "latitude:"+ event.location.latitude +";"}
         ></a-entity>))}
 
       <a-camera gps-camera rotation-reader></a-camera>
