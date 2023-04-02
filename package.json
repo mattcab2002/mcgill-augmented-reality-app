@@ -1,28 +1,28 @@
 {
-  "name": "mcgill-augmented-reality-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
-    "dev": "node dist/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mattcab2002/mcgill-augmented-reality-app.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mattcab2002/mcgill-augmented-reality-app/issues"
-  },
-  "homepage": "https://github.com/mattcab2002/mcgill-augmented-reality-app#readme",
-  "dependencies": {
-    "@ar-js-org/ar.js": "^3.4.3"
-  },
-  "devDependencies": {
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
-  }
+    "name": "mcgill-augmented-reality-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack --config webpack.config.js",
+        "dev": "node dist/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mattcab2002/mcgill-augmented-reality-app.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mattcab2002/mcgill-augmented-reality-app/issues"
+    },
+    "homepage": "https://github.com/mattcab2002/mcgill-augmented-reality-app#readme",
+    "dependencies": {
+        "@ar-js-org/ar.js": "^3.4.3"
+    },
+    "devDependencies": {
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.1"
+    }
 }
