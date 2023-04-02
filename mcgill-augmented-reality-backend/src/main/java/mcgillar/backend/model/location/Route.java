@@ -1,35 +1,37 @@
 package mcgillar.backend.model.location;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import mcgillar.backend.model.user.AppUser;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class Route {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
+
+    @ManyToOne
+    private AppUser user;
 
     @OneToOne
-    private Location location;
-    
+    private Location startLocation;
+
     @OneToOne
-    private AppUser organizer;
+    private Location endLocation;
 
-    private Date date;
-
-    private String name;
+    // ... maybe has a list of locations
 
 }

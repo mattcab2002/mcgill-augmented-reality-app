@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LocationTO {
-
-    public String postalCode;
-    public String address;
-    public Double latitude;
-    public Double longitude;
-    public Double altitude;
+public class RouteRequestTO {
     
+    public LocationTO startLocation;
+    public LocationTO endLocationTO;
+
 }
