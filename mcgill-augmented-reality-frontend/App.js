@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
+import NavigationBar from './components/NavigationBar';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,7 @@ const App = () => (
         options={{headerShown: false}}
       />
     </Stack.Navigator>
+    <NavigationBar />
   </NavigationContainer>
   
 );
