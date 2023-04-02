@@ -36,6 +36,14 @@ export async function getToken(username, password) {
     }
 }
 
+export async function getTokenRes(username, password) {
+    const base64Encoded = encodeBase64(`${username}:${password}`);
+    return res = await fetch(`${BACKEND}/token`, { method: 'POST', headers: { 'Authorization': 'Basic ' + base64Encoded }});
+}
+
+export async function registerUser(username, password) {
+    return res = await fetch(`${BACKEND}/user/register?username=${username}&password=${password}`, { method: 'POST'})};
+
 /**
  * Wrapper around fetch api that attaches user token to request.
  *
