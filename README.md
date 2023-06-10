@@ -26,8 +26,6 @@ Coming soon.
 
 ## Installation
 
-<Provide instructions on how to install and set up your app locally. Include any dependencies that need to be installed, and steps to run the app on a simulator or physical device. For example:>
-
 1. Clone this repository: `git clone git@github.com:mattcab2002/mcgill-augmented-reality-app.git`
 2. Checkout to frontend: `git checkout`
 3. In 2 different windows open the frontend and the backend: `cd mcgill-augmented-reality-frontend` and `cd mcgill-augmented-reality-backend`
