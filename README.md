@@ -16,6 +16,12 @@ For newcomers to McGill (or even grads.) it can be difficult to find your way to
 
 Coming soon.
 
+<div style="display: flex;">
+  <img alt="Home Page" src="./docs/home.webp" width="200" />
+  <img alt="Sign Up Page" src="./docs/sign-up.webp" width="200" />
+  <img alt="Profile Page" src="./docs/profile.webp" width="200" />
+</div>
+
 ## Features
 
 - Select a building and visualize the path from your current location.
